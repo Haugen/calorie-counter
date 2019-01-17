@@ -1,3 +1,3 @@
-# Toptal Calorie Counter
+# Calorie Counter
 
-Calorie Counter test project for Toptal application.
+Calorie Counter.
