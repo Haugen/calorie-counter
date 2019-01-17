@@ -33,10 +33,15 @@ exports.postSignup = async (req, res) => {
 
     res.status(201).json({
       message: 'User successfully created.',
-      user: user.email
+      data: {
+        user: user.email
+      }
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      message: 'Oops! Something went wrong.',
+      errors: [error.toString()]
+    });
   }
 };
 
@@ -59,7 +64,12 @@ exports.postLogin = async (req, res) => {
         .status(401)
         .set('WWW-Authentication', 'Basic realm="Logged out Realm"')
         .json({
-          message: 'Incorrect e-mail and/or password.'
+          message: 'Incorrect e-mail and/or password.',
+          errors: [
+            {
+              msg: 'Incorrect e-mail and/or password.'
+            }
+          ]
         });
     }
 
@@ -74,11 +84,16 @@ exports.postLogin = async (req, res) => {
 
     res.status(200).json({
       message: 'User successfully logged in.',
-      token: token,
-      userId: user._id.toString()
+      data: {
+        token: token,
+        userId: user._id.toString()
+      }
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      message: 'Oops! Something went wrong.',
+      errors: [error.toString()]
+    });
   }
 };
 
