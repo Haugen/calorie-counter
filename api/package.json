@@ -1,13 +1,13 @@
 {
-  "name": "api",
+  "name": "calorie-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "api for calorie project.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Tobias Haugen",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -15,6 +15,7 @@
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "express-validator": "^5.3.1",
+    "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.4"
   }
 }

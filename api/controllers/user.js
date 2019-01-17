@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator/check');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
@@ -45,10 +46,40 @@ exports.postSignup = async (req, res) => {
  *
  * Permissions: *
  */
-exports.postLogin = (req, res) => {
-  res.json({
-    message: 'POST User login.'
-  });
+exports.postLogin = async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  try {
+    const user = await User.findOne({ email: email });
+    const passMatch = await bcrypt.compare(password, user ? user.password : '');
+
+    if (!user || !passMatch) {
+      res
+        .status(401)
+        .set('WWW-Authentication', 'Basic realm="Logged out Realm"')
+        .json({
+          message: 'Incorrect e-mail and/or password.'
+        });
+    }
+
+    const token = jwt.sign(
+      {
+        email: user.email,
+        userId: user._id.toString()
+      },
+      process.env.JWT_TOKEN_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.status(200).json({
+      message: 'User successfully logged in.',
+      token: token,
+      userId: user._id.toString()
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 /**
