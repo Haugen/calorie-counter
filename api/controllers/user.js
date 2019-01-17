@@ -1,13 +1,42 @@
+const bcrypt = require('bcryptjs');
+const { validationResult } = require('express-validator/check');
+
+const User = require('../models/user');
+
 /**
  * POST /user/signup
- * Sign user up. Returns the signed up user?
+ * Sign user up. Returns the email address used for signing up.
  *
  * Permissions: *
  */
-exports.postSignup = (req, res) => {
-  res.json({
-    message: 'POST New user signup.'
-  });
+exports.postSignup = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: 'Validation failed.',
+      errors: errors.array()
+    });
+  }
+
+  const email = req.body.email;
+  const password = req.body.password;
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const user = await User.create({
+      email: email,
+      password: hashedPassword
+    });
+    user.save();
+
+    res.status(201).json({
+      message: 'User successfully created.',
+      user: user.email
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 /**
