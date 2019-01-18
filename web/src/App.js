@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 
 import { Router, Link } from '@reach/router';
+import { connect } from 'react-redux';
 
 import Toolbar from './components/Toolbar/Toolbar';
 import SignupPage from './pages/Signup/Signup';
 import LoginPage from './pages/Login/Login';
 
 class App extends Component {
-  handleLogin = (event, formData) => {
-    event.preventDefault();
-    console.log(formData);
-  };
-
   render() {
     return (
       <>
@@ -32,4 +28,8 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  authMessages: state.auth.messages
+});
+
+export default connect(mapStateToProps)(App);
