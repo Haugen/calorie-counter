@@ -7,11 +7,6 @@ import SignupPage from './pages/Signup/Signup';
 import LoginPage from './pages/Login/Login';
 
 class App extends Component {
-  handleSignup = (event, formData) => {
-    event.preventDefault();
-    console.log(formData);
-  };
-
   handleLogin = (event, formData) => {
     event.preventDefault();
     console.log(formData);
