@@ -15,6 +15,18 @@ const MONGODB_URI = `mongodb+srv://${process.env.MONGO_DB_USER}:${
 
 app.use(bodyParser.json());
 
+// Middleware to set some necessary headers.
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, PATCH, DELETE'
+  );
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  next();
+});
+
 // Routes.
 app.use('/admin', adminRoutes);
 app.use('/user', userRoutes);
