@@ -2,7 +2,11 @@ import React from 'react';
 
 const Modal = props => {
   const messages = props.messages.map(message => {
-    return <li class={message.type}>{message.message}</li>;
+    return (
+      <li key={message.message} className={message.type}>
+        {message.message}
+      </li>
+    );
   });
 
   return (

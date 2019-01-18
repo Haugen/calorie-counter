@@ -60,16 +60,11 @@ exports.postLogin = async (req, res) => {
     const passMatch = await bcrypt.compare(password, user ? user.password : '');
 
     if (!user || !passMatch) {
-      res
+      return res
         .status(401)
         .set('WWW-Authentication', 'Basic realm="Logged out Realm"')
         .json({
-          message: 'Incorrect e-mail and/or password.',
-          errors: [
-            {
-              msg: 'Incorrect e-mail and/or password.'
-            }
-          ]
+          message: 'Incorrect e-mail and/or password.'
         });
     }
 

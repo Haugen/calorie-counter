@@ -12,7 +12,6 @@ class Signup extends Component {
   };
 
   handleInputChange = (event, field) => {
-    console.log(event.target.value);
     this.setState({
       formData: {
         ...this.state.formData,
@@ -53,16 +52,17 @@ class Signup extends Component {
       return this.props.setMessages(errors);
     }
     if (response.status !== 201) {
+      const result = await response.json();
+
       return this.props.setMessages({
         type: 'warning',
-        message: 'Oops! Something went wrong.'
+        message: result.message
       });
     }
 
     // Account sucessfully created.
-    const result = await response.json();
     this.setState({ signupSuccess: true });
-    this.props.onSuccess(result);
+    this.props.onSuccess();
   };
 
   render() {
@@ -74,7 +74,7 @@ class Signup extends Component {
           <p>
             Already have an account? <Link to="/">Go login!</Link>
           </p>
-          <h2>Signup</h2>
+          <h2>Sign up</h2>
           <form onSubmit={e => this.handleFormPost(e, this.state.formData)}>
             <div className="form-group">
               <label htmlFor="email">Email address</label>
@@ -97,7 +97,7 @@ class Signup extends Component {
               />
             </div>
             <button type="submit" className="btn btn-primary">
-              Login
+              Sign up!
             </button>
           </form>
         </>
