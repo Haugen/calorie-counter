@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import { Router, Link } from '@reach/router';
 
-import Toolbar from './components/Toolbar/Toolbar';
-import Modal from './components/Modal/Modal';
-import SignupPage from './pages/Signup/Signup';
-import LoginPage from './pages/Login/Login';
+import Toolbar from './components/Toolbar';
+import Modal from './components/Modal';
+import SignupPage from './pages/Signup';
+import LoginPage from './pages/Login';
 
 class App extends Component {
   state = {
