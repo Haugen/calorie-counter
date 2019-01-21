@@ -39,6 +39,13 @@ app.use('*', (req, res, next) => {
   });
 });
 
+// Default error handler.
+app.use('*', (err, req, res, next) => {
+  res.status(err.statusCode || 500).json({
+    error: err.toString()
+  });
+});
+
 mongoose
   .connect(
     MONGODB_URI,

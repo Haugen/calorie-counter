@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+const cError = require('../util/custom-error');
+
 module.exports = (...allowed) => {
   if (allowed.length === 0) {
     allowed = ['user', 'manager', 'admin'];
@@ -8,9 +10,9 @@ module.exports = (...allowed) => {
   const isAllowed = role => allowed.indexOf(role) > -1;
 
   return (req, res, next) => {
-    // If not Authorization-
+    // If there is no Authorization header.
     if (!req.get('Authorization')) {
-      throw new Error('Not authenticated.');
+      cError('Not authenticated.', 401);
     }
 
     const token = req.get('Authorization').split(' ')[1];
@@ -23,14 +25,9 @@ module.exports = (...allowed) => {
       throw error;
     }
 
-    // Would we ever escape the try/catch with decodedToken being falsy?
-    if (!decodedToken) {
-      throw new Error('Not authenticated.');
-    }
-
-    // Valid token! Last check, is the user role allowed to proceed?
-    if (!isAllowed(decodedToken.role)) {
-      throw new Error('Not authenticated.');
+    // Checking again for token, and lastly checking user role permissions.
+    if (!decodedToken || !isAllowed(decodedToken.role)) {
+      cError('Not authenticated. !', 401);
     }
 
     req.userId = decodedToken.userId;

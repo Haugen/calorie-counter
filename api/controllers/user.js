@@ -3,6 +3,7 @@ const { validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const cError = require('../util/custom-error');
 
 /**
  * POST /user/signup
@@ -38,10 +39,7 @@ exports.postSignup = async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({
-      message: 'Oops! Something went wrong.',
-      errors: [error.toString()]
-    });
+    throw error;
   }
 };
 
@@ -85,10 +83,7 @@ exports.postLogin = async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({
-      message: 'Oops! Something went wrong.',
-      errors: [error.toString()]
-    });
+    throw error;
   }
 };
 
