@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal = props => {
+export default props => {
   const messages = props.messages.map(message => {
     return (
       <li key={message.message} className={message.type}>
@@ -18,5 +18,3 @@ const Modal = props => {
     </div>
   );
 };
-
-export default Modal;

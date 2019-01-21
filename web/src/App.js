@@ -7,6 +7,7 @@ import Modal from './components/Modal';
 import SignupPage from './pages/Signup';
 import LoginPage from './pages/Login';
 import AddMealPage from './pages/AddMeal';
+import ListMealsPage from './pages/ListMeals';
 
 class App extends Component {
   state = {
@@ -112,6 +113,11 @@ class App extends Component {
             token={this.state.token}
             setMessages={this.setMessages}
             path="/add-meal"
+          />
+          <ListMealsPage
+            token={this.state.token}
+            setMessages={this.setMessages}
+            path="/"
           />
         </Router>
       );

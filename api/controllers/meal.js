@@ -8,9 +8,13 @@ const Meal = require('../models/meal');
  *
  * Permissions: user, manager, admin.
  */
-exports.getMeals = (req, res) => {
+exports.getMeals = async (req, res) => {
+  const meals = await Meal.find({ user: req.userId });
+
   res.json({
-    message: 'GET All user meals.'
+    data: {
+      meals: meals
+    }
   });
 };
 
