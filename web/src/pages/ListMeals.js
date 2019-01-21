@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Meal from '../components/Meal';
+import { BASE_URL } from '../util/vars';
 
 class Login extends Component {
   state = {
@@ -9,7 +10,7 @@ class Login extends Component {
   };
 
   async componentDidMount() {
-    const response = await fetch('http://localhost:3001/meals', {
+    const response = await fetch(BASE_URL + '/meals', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.props.token

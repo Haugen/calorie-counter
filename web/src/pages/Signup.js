@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import { Link, Redirect } from '@reach/router';
 
+import { BASE_URL } from '../util/vars';
+
 class Signup extends Component {
   state = {
     formData: {
@@ -23,7 +25,7 @@ class Signup extends Component {
   handleFormPost = async (event, formData) => {
     event.preventDefault();
 
-    const response = await fetch('http://localhost:3001/user/signup', {
+    const response = await fetch(BASE_URL + '/user/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

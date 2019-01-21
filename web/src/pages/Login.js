@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { Link } from '@reach/router';
+import { BASE_URL } from '../util/vars';
 
 class Login extends Component {
   state = {
@@ -23,7 +24,7 @@ class Login extends Component {
   handleFormPost = async (event, formData) => {
     event.preventDefault();
 
-    const response = await fetch('http://localhost:3001/user/login', {
+    const response = await fetch(BASE_URL + '/user/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

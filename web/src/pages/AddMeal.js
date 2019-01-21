@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { BASE_URL } from '../util/vars';
+
 class Login extends Component {
   state = {
     formData: {
@@ -22,7 +24,7 @@ class Login extends Component {
   handleFormPost = async (event, formData) => {
     event.preventDefault();
 
-    const response = await fetch('http://localhost:3001/meals', {
+    const response = await fetch(BASE_URL + '/meals', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
