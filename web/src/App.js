@@ -86,6 +86,17 @@ class App extends Component {
     }, milliseconds);
   };
 
+  test = async () => {
+    const response = await fetch('http://localhost:3001/meals', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.state.token
+      }
+    });
+
+    console.log(await response.json());
+  };
+
   render() {
     let pageContent;
 
@@ -117,6 +128,8 @@ class App extends Component {
         {this.state.messages.length > 0 ? (
           <Modal messages={this.state.messages} onClose={this.clearMessages} />
         ) : null}
+
+        <button onClick={this.test}>Only for auth!</button>
 
         <div className="container">
           <div className="col-12">

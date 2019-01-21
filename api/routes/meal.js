@@ -3,14 +3,15 @@ const express = require('express');
 const router = express.Router();
 
 const mealController = require('../controllers/meal');
+const auth = require('../middleware/auth');
 
-router.get('/meals', mealController.getMeals);
-router.get('/meals/:id', mealController.getMeal);
+router.get('/meals', auth(), mealController.getMeals);
+router.get('/meals/:id', auth(), mealController.getMeal);
 
-router.post('/meals', mealController.postMeal);
+router.post('/meals', auth(), mealController.postMeal);
 
-router.put('/meals/:id', mealController.putMeal);
+router.put('/meals/:id', auth(), mealController.putMeal);
 
-router.delete('/meals/:id', mealController.deleteMeal);
+router.delete('/meals/:id', auth(), mealController.deleteMeal);
 
 module.exports = router;
