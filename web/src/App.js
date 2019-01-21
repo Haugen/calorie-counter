@@ -93,8 +93,6 @@ class App extends Component {
         Authorization: 'Bearer ' + this.state.token
       }
     });
-
-    console.log(await response.json());
   };
 
   render() {
@@ -128,8 +126,6 @@ class App extends Component {
         {this.state.messages.length > 0 ? (
           <Modal messages={this.state.messages} onClose={this.clearMessages} />
         ) : null}
-
-        <button onClick={this.test}>Only for auth!</button>
 
         <div className="container">
           <div className="col-12">
