@@ -3,7 +3,6 @@ const { validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
-const cError = require('../util/custom-error');
 
 /**
  * POST /user/signup

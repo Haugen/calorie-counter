@@ -1,3 +1,7 @@
+const { validationResult } = require('express-validator/check');
+
+const Meal = require('../models/meal');
+
 /**
  * GET /meals
  * Returns all meals for logged in user.
@@ -28,10 +32,33 @@ exports.getMeal = (req, res) => {
  *
  * Permissions: user, manager, admin.
  */
-exports.postMeal = (req, res, next) => {
-  res.json({
-    message: 'POST Single meal.'
-  });
+exports.postMeal = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: 'Validation failed.',
+      errors: errors.array()
+    });
+  }
+
+  const mealData = {
+    text: req.body.text,
+    calories: req.body.calories,
+    user: req.userId
+  };
+
+  try {
+    const newMeal = await Meal.create(mealData);
+
+    res.json({
+      message: 'Meal created.',
+      data: {
+        meal: newMeal
+      }
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 /**

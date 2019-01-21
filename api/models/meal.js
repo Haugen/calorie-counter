@@ -12,11 +12,15 @@ const MealSchema = new Schema({
   },
   date: {
     type: Date,
-    required: true
+    required: false
   },
   time: {
     type: Date,
     required: false
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    red: 'User'
   }
 });
 

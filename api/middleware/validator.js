@@ -22,4 +22,16 @@ validators.signup = [
     .withMessage('Please enter a password longer than 5 characters.')
 ];
 
+validators.addMeal = [
+  check('text')
+    .not()
+    .isEmpty()
+    .withMessage('Please include som text.')
+    .isLength({ max: 300 })
+    .withMessage('Text too long. Maximum 300 characters.'),
+  check('calories')
+    .isNumeric({ no_symbols: true })
+    .withMessage('Calories need to be a number.')
+];
+
 module.exports = validators;

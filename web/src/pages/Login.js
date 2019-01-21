@@ -70,7 +70,7 @@ class Login extends Component {
             <label htmlFor="email">Email address</label>
             <input
               onChange={e => this.handleInputChange(e, 'email')}
-              value={this.state.email}
+              value={this.state.formData.email}
               type="email"
               className="form-control"
               id="email"
@@ -80,7 +80,7 @@ class Login extends Component {
             <label htmlFor="password">Password</label>
             <input
               onChange={e => this.handleInputChange(e, 'password')}
-              value={this.state.password}
+              value={this.state.formData.password}
               type="password"
               className="form-control"
               id="password"

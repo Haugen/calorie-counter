@@ -6,6 +6,7 @@ import Toolbar from './components/Toolbar';
 import Modal from './components/Modal';
 import SignupPage from './pages/Signup';
 import LoginPage from './pages/Login';
+import AddMealPage from './pages/AddMeal';
 
 class App extends Component {
   state = {
@@ -86,15 +87,6 @@ class App extends Component {
     }, milliseconds);
   };
 
-  test = async () => {
-    const response = await fetch('http://localhost:3001/meals', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.state.token
-      }
-    });
-  };
-
   render() {
     let pageContent;
 
@@ -102,13 +94,11 @@ class App extends Component {
       pageContent = (
         <Router>
           <SignupPage
-            onPost={this.handleSignup}
             setMessages={this.setMessages}
             onSuccess={this.handleSuccessfulSignup}
             path="signup"
           />
           <LoginPage
-            onPost={this.handleLogin}
             setMessages={this.setMessages}
             onSuccess={this.handleSuccessfulLogin}
             path="/"
@@ -116,7 +106,15 @@ class App extends Component {
         </Router>
       );
     } else {
-      pageContent = 'Logged in!';
+      pageContent = (
+        <Router>
+          <AddMealPage
+            token={this.state.token}
+            setMessages={this.setMessages}
+            path="/add-meal"
+          />
+        </Router>
+      );
     }
 
     return (

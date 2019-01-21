@@ -19,13 +19,7 @@ const UserSchema = new Schema({
     type: Number,
     required: true,
     default: 2200
-  },
-  meals: [
-    {
-      type: Schema.Types.ObjectId,
-      red: 'Meal'
-    }
-  ]
+  }
 });
 
 module.exports = mongoose.model('User', UserSchema);
