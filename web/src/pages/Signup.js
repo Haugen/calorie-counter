@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Link, Redirect } from '@reach/router';
 
-import { BASE_URL } from '../util/vars';
+import { BASE_URL } from '../util/helpers';
 
 class Signup extends Component {
   state = {

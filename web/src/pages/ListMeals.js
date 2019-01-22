@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Meal from '../components/Meal';
-import { BASE_URL } from '../util/vars';
+import { BASE_URL } from '../util/helpers';
 
 class Login extends Component {
   state = {

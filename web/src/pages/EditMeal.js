@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { BASE_URL } from '../util/vars';
+import { BASE_URL, convertDate } from '../util/helpers';
 
 class Login extends Component {
   state = {
@@ -44,7 +44,7 @@ class Login extends Component {
           id: result.data.meal._id,
           text: result.data.meal.text,
           calories: result.data.meal.calories,
-          date: result.data.meal.date
+          date: convertDate(result.data.meal.date, 'utl')
         },
         loading: false
       });
@@ -71,7 +71,7 @@ class Login extends Component {
     const contentBody = {
       text: formData.text,
       calories: formData.calories,
-      date: formData.date
+      date: convertDate(formData.date, 'ltu')
     };
     contentBody._id = this.props.editMode ? this.state.formData.id : null;
     let url = BASE_URL + '/meals';
@@ -123,7 +123,7 @@ class Login extends Component {
           id: '',
           text: '',
           calories: '',
-          date: '',
+          date: new Date(),
           time: ''
         }
       });
@@ -146,14 +146,13 @@ class Login extends Component {
                 <label>Date and time</label>
                 <div className="form-group">
                   <DatePicker
-                    selected={this.state.formData.date}
+                    selected={new Date(this.state.formData.date)}
                     onChange={e => this.handleInputChange(e, 'date')}
                     showTimeSelect
                     dateFormat="d/M yyyy HH:mm"
                     timeFormat="HH:mm"
                     timeIntervals={15}
                     timeCaption="time"
-                    utc={true}
                   />
                 </div>
               </div>

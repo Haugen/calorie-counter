@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Link } from '@reach/router';
-import { BASE_URL } from '../util/vars';
+import { BASE_URL } from '../util/helpers';
 
 class Login extends Component {
   state = {
