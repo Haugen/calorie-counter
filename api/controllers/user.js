@@ -10,7 +10,7 @@ const User = require('../models/user');
  *
  * Permissions: *
  */
-exports.postSignup = async (req, res) => {
+exports.postSignup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
@@ -38,7 +38,7 @@ exports.postSignup = async (req, res) => {
       }
     });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
@@ -48,7 +48,7 @@ exports.postSignup = async (req, res) => {
  *
  * Permissions: *
  */
-exports.postLogin = async (req, res) => {
+exports.postLogin = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
 
@@ -82,7 +82,7 @@ exports.postLogin = async (req, res) => {
       }
     });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 

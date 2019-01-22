@@ -31,6 +31,7 @@ module.exports = (...allowed) => {
     }
 
     req.userId = decodedToken.userId;
+    req.userRole = decodedToken.role;
 
     next();
   };

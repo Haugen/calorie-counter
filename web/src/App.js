@@ -6,7 +6,7 @@ import Toolbar from './components/Toolbar';
 import Modal from './components/Modal';
 import SignupPage from './pages/Signup';
 import LoginPage from './pages/Login';
-import AddMealPage from './pages/AddMeal';
+import EditMealPage from './pages/EditMeal';
 import ListMealsPage from './pages/ListMeals';
 
 class App extends Component {
@@ -109,10 +109,17 @@ class App extends Component {
     } else {
       pageContent = (
         <Router>
-          <AddMealPage
+          <EditMealPage
             token={this.state.token}
             setMessages={this.setMessages}
             path="/add-meal"
+            editMode={false}
+          />
+          <EditMealPage
+            token={this.state.token}
+            setMessages={this.setMessages}
+            path="/edit-meal/:id"
+            editMode={true}
           />
           <ListMealsPage
             token={this.state.token}

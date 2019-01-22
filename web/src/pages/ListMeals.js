@@ -38,6 +38,34 @@ class Login extends Component {
     });
   }
 
+  handleDelete = async mealId => {
+    const response = await fetch(BASE_URL + '/meals/' + mealId, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.props.token
+      }
+    });
+
+    if (response.status !== 200) {
+      const result = await response.json();
+
+      return this.props.setMessages({
+        type: 'warning',
+        message: result.error
+      });
+    }
+
+    const newMeals = this.state.meals.filter(meal => {
+      return meal._id !== mealId;
+    });
+
+    this.setState({
+      meals: newMeals,
+      loading: false
+    });
+  };
+
   render() {
     let content;
 
@@ -45,7 +73,13 @@ class Login extends Component {
       content = [];
       this.state.meals.forEach(meal => {
         content.push(
-          <Meal key={meal._id} text={meal.text} calories={meal.calories} />
+          <Meal
+            key={meal._id}
+            text={meal.text}
+            calories={meal.calories}
+            id={meal._id}
+            onDelete={this.handleDelete}
+          />
         );
       });
     } else if (!this.state.loading) {
