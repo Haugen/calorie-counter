@@ -14,3 +14,16 @@ module.exports.convertDate = (date, direction) => {
   }
   return newDate;
 };
+
+// Formatting dates for display.
+module.exports.dateForDisplay = date => {
+  let newDate = new Date(date).toLocaleString('en-GB', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric'
+  });
+  return newDate;
+};
