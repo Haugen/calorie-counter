@@ -27,7 +27,7 @@ module.exports = (...allowed) => {
 
     // Checking again for token, and lastly checking user role permissions.
     if (!decodedToken || !isAllowed(decodedToken.role)) {
-      cError('Not authenticated. !', 401);
+      cError('Not authenticated.', 401);
     }
 
     req.userId = decodedToken.userId;

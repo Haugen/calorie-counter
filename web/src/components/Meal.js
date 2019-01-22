@@ -9,7 +9,7 @@ export default props => {
     <div className="card mb-3">
       <div className="card-body">
         <p className="card-text">
-          {props.text}, {props.calories}
+          {props.text}, {props.calories}, {props.date}
         </p>
       </div>
       <div className="card-footer text-muted">

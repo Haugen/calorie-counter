@@ -77,6 +77,7 @@ class Login extends Component {
             key={meal._id}
             text={meal.text}
             calories={meal.calories}
+            date={meal.date}
             id={meal._id}
             onDelete={this.handleDelete}
           />

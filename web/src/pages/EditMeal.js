@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
+
 import { BASE_URL } from '../util/vars';
 
 class Login extends Component {
@@ -8,7 +12,7 @@ class Login extends Component {
       id: '',
       text: '',
       calories: '',
-      date: '',
+      date: new Date(),
       time: ''
     },
     loading: true
@@ -39,7 +43,8 @@ class Login extends Component {
           ...this.state.formData,
           id: result.data.meal._id,
           text: result.data.meal.text,
-          calories: result.data.meal.calories
+          calories: result.data.meal.calories,
+          date: result.data.meal.date
         },
         loading: false
       });
@@ -54,7 +59,7 @@ class Login extends Component {
     this.setState({
       formData: {
         ...this.state.formData,
-        [field]: event.target.value
+        [field]: field === 'date' ? event : event.target.value
       }
     });
   };
@@ -66,8 +71,7 @@ class Login extends Component {
     const contentBody = {
       text: formData.text,
       calories: formData.calories,
-      date: formData.date,
-      time: formData.time
+      date: formData.date
     };
     contentBody._id = this.props.editMode ? this.state.formData.id : null;
     let url = BASE_URL + '/meals';
@@ -138,6 +142,21 @@ class Login extends Component {
           <>
             <h2>{this.props.editMode ? 'Edit meal' : 'Add new meal'}</h2>
             <form onSubmit={e => this.handleFormPost(e, this.state.formData)}>
+              <div className="form-group">
+                <label>Date and time</label>
+                <div className="form-group">
+                  <DatePicker
+                    selected={this.state.formData.date}
+                    onChange={e => this.handleInputChange(e, 'date')}
+                    showTimeSelect
+                    dateFormat="d/M yyyy HH:mm"
+                    timeFormat="HH:mm"
+                    timeIntervals={15}
+                    timeCaption="time"
+                    utc={true}
+                  />
+                </div>
+              </div>
               <div className="form-group">
                 <label htmlFor="text">Text</label>
                 <textarea

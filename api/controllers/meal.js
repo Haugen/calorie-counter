@@ -67,6 +67,7 @@ exports.postMeal = async (req, res, next) => {
   const mealData = {
     text: req.body.text,
     calories: req.body.calories,
+    date: req.body.date,
     user: req.userId
   };
 
@@ -102,6 +103,7 @@ exports.putMeal = async (req, res, next) => {
   const mealId = req.params.id;
   const text = req.body.text;
   const calories = req.body.calories;
+  const date = req.body.date;
 
   try {
     const meal = await Meal.findOne({ _id: mealId });
@@ -116,6 +118,7 @@ exports.putMeal = async (req, res, next) => {
 
     meal.text = text;
     meal.calories = calories;
+    meal.date = date;
     await meal.save();
 
     res.status(200).json({
