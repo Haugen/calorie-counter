@@ -14,6 +14,8 @@ exports.getMeals = async (req, res) => {
   const toDate = req.query.toDate;
   const fromTime = req.query.fromTime;
   const toTime = req.query.toTime;
+  // To add one second less than 24 hours to date query.
+  const almostADay = 1000 * 60 * 60 * 24 - 1000;
 
   const query = Meal.find({ user: req.userId });
 
@@ -21,7 +23,7 @@ exports.getMeals = async (req, res) => {
     query.where({ date: { $gte: fromDate } });
   }
   if (toDate) {
-    query.where({ date: { $lte: toDate } });
+    query.where({ date: { $lte: +toDate + almostADay } });
   }
 
   query.sort({ date: 'desc' });

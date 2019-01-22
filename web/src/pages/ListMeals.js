@@ -84,39 +84,19 @@ class Login extends Component {
   };
 
   buildQuery = () => {
-    const fromDate = this.state.filters.fromDate
-      ? convertDate(this.state.filters.fromDate, 'ltu')
-      : null;
-    const toDate = this.state.filters.toDate
-      ? convertDate(this.state.filters.toDate, 'ltu')
-      : null;
-    const fromTime = this.state.filters.fromTime
-      ? convertDate(this.state.filters.fromTime, 'ltu')
-      : null;
-    const toTime = this.state.filters.toTime
-      ? convertDate(this.state.filters.toTime, 'ltu')
-      : null;
-
+    const queries = [];
     let query = '';
-    let queries = [];
 
-    if (fromDate) {
-      queries.push(`fromDate=${fromDate}`);
+    for (let [key, value] of Object.entries(this.state.filters)) {
+      if (value) {
+        const date = convertDate(value, 'ltu');
+        queries.push(`${key}=${date}`);
+      }
     }
-    if (toDate) {
-      queries.push(`toDate=${toDate}`);
-    }
-    if (fromTime) {
-      queries.push(`fromTime=${fromTime}`);
-    }
-    if (toTime) {
-      queries.push(`toTime=${toTime}`);
-    }
+
     if (queries.length > 0) {
       query = `?${queries.join('&')}`;
     }
-
-    console.log(query);
 
     this.setState({
       ...this.state,
