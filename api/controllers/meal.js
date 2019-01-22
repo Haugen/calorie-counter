@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator/check');
 
 const Meal = require('../models/meal');
-const cError = require('../util/custom-error');
+const { cError, timeNumber } = require('../util/helpers');
 
 /**
  * GET /meals
@@ -11,11 +11,12 @@ const cError = require('../util/custom-error');
  */
 exports.getMeals = async (req, res) => {
   const fromDate = req.query.fromDate;
-  const toDate = req.query.toDate;
-  const fromTime = req.query.fromTime;
-  const toTime = req.query.toTime;
+  let toDate = req.query.toDate;
+  const fromTime = timeNumber(req.query.fromTime);
+  const toTime = timeNumber(req.query.toTime);
   // To add one second less than 24 hours to date query.
   const almostADay = 1000 * 60 * 60 * 24 - 1000;
+  toDate = Number(toDate) + almostADay;
 
   const query = Meal.find({ user: req.userId });
 
@@ -23,7 +24,13 @@ exports.getMeals = async (req, res) => {
     query.where({ date: { $gte: fromDate } });
   }
   if (toDate) {
-    query.where({ date: { $lte: +toDate + almostADay } });
+    query.where({ date: { $lte: toDate } });
+  }
+  if (fromTime) {
+    query.where({ time: { $gte: fromTime } });
+  }
+  if (toTime) {
+    query.where({ time: { $lte: toTime } });
   }
 
   query.sort({ date: 'desc' });
@@ -82,10 +89,14 @@ exports.postMeal = async (req, res, next) => {
     });
   }
 
+  const date = req.body.date;
+  const time = timeNumber(date);
+
   const mealData = {
     text: req.body.text,
     calories: req.body.calories,
     date: req.body.date,
+    time: time,
     user: req.userId
   };
 
@@ -122,6 +133,7 @@ exports.putMeal = async (req, res, next) => {
   const text = req.body.text;
   const calories = req.body.calories;
   const date = req.body.date;
+  const time = timeNumber(date);
 
   try {
     const meal = await Meal.findOne({ _id: mealId });
@@ -137,6 +149,7 @@ exports.putMeal = async (req, res, next) => {
     meal.text = text;
     meal.calories = calories;
     meal.date = date;
+    meal.time = time;
     await meal.save();
 
     res.status(200).json({

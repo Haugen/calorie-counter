@@ -15,7 +15,7 @@ const MealSchema = new Schema({
     required: false
   },
   time: {
-    type: Date,
+    type: Number,
     required: false
   },
   user: {

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const cError = require('../util/custom-error');
+const { cError } = require('../util/helpers');
 
 module.exports = (...allowed) => {
   if (allowed.length === 0) {
