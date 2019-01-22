@@ -10,7 +10,23 @@ const cError = require('../util/custom-error');
  * Permissions: user, manager, admin.
  */
 exports.getMeals = async (req, res) => {
-  const meals = await Meal.find({ user: req.userId });
+  const fromDate = req.query.fromDate;
+  const toDate = req.query.toDate;
+  const fromTime = req.query.fromTime;
+  const toTime = req.query.toTime;
+
+  const query = Meal.find({ user: req.userId });
+
+  if (fromDate) {
+    query.where({ date: { $gte: fromDate } });
+  }
+  if (toDate) {
+    query.where({ date: { $lte: toDate } });
+  }
+
+  query.sort({ date: 'desc' });
+
+  const meals = await query;
 
   res.json({
     data: {

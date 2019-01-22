@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
 
 import Meal from '../components/Meal';
-import { BASE_URL } from '../util/helpers';
+import MealFilters from '../components/MealFilters';
+import { BASE_URL, convertDate } from '../util/helpers';
 
 class Login extends Component {
   state = {
     meals: [],
+    filters: {
+      fromDate: null,
+      toDate: null,
+      fromTime: null,
+      toTime: null
+    },
+    activeQuery: '',
     loading: true
   };
 
   async componentDidMount() {
-    const response = await fetch(BASE_URL + '/meals', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.props.token
-      }
-    });
+    const response = await this.fetchMeals(BASE_URL + '/meals');
 
     if (response.status !== 200) {
       const result = await response.json();
@@ -37,6 +40,89 @@ class Login extends Component {
       loading: false
     });
   }
+
+  fetchMeals = async url => {
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.props.token
+      }
+    });
+
+    return response;
+  };
+
+  handleFilterChange = (event, filter) => {
+    this.setState(
+      {
+        ...this.state,
+        filters: {
+          ...this.state.filters,
+          [filter]: event
+        }
+      },
+      () => this.buildQuery()
+    );
+  };
+
+  handleFiltering = async () => {
+    this.setState({
+      ...this.state,
+      loading: true
+    });
+
+    const response = await this.fetchMeals(
+      BASE_URL + '/meals' + this.state.activeQuery
+    );
+
+    const result = await response.json();
+
+    this.setState({
+      meals: result.data.meals,
+      loading: false
+    });
+  };
+
+  buildQuery = () => {
+    const fromDate = this.state.filters.fromDate
+      ? convertDate(this.state.filters.fromDate, 'ltu')
+      : null;
+    const toDate = this.state.filters.toDate
+      ? convertDate(this.state.filters.toDate, 'ltu')
+      : null;
+    const fromTime = this.state.filters.fromTime
+      ? convertDate(this.state.filters.fromTime, 'ltu')
+      : null;
+    const toTime = this.state.filters.toTime
+      ? convertDate(this.state.filters.toTime, 'ltu')
+      : null;
+
+    let query = '';
+    let queries = [];
+
+    if (fromDate) {
+      queries.push(`fromDate=${fromDate}`);
+    }
+    if (toDate) {
+      queries.push(`toDate=${toDate}`);
+    }
+    if (fromTime) {
+      queries.push(`fromTime=${fromTime}`);
+    }
+    if (toTime) {
+      queries.push(`toTime=${toTime}`);
+    }
+    if (queries.length > 0) {
+      query = `?${queries.join('&')}`;
+    }
+
+    console.log(query);
+
+    this.setState({
+      ...this.state,
+      activeQuery: query
+    });
+  };
 
   handleDelete = async mealId => {
     const response = await fetch(BASE_URL + '/meals/' + mealId, {
@@ -90,6 +176,11 @@ class Login extends Component {
     return (
       <>
         <h2>My meals</h2>
+        <MealFilters
+          filters={this.state.filters}
+          onFilterChange={this.handleFilterChange}
+          onHandleFiltering={this.handleFiltering}
+        />
         {content}
       </>
     );

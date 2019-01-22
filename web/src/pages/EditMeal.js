@@ -136,6 +136,8 @@ class Login extends Component {
   };
 
   render() {
+    console.log(this.state.formData.date);
+
     return (
       <>
         {!this.state.loading ? (

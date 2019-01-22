@@ -5,12 +5,12 @@ module.exports.BASE_URL = 'http://localhost:3001';
 module.exports.convertDate = (date, direction) => {
   const inputDate = new Date(date);
   const offset = inputDate.getTimezoneOffset();
-  let utcDate;
+  let newDate;
 
   if (direction === 'utl') {
-    utcDate = Number(inputDate) + offset * 60 * 1000;
+    newDate = Number(inputDate) + offset * 60 * 1000;
   } else if (direction === 'ltu') {
-    utcDate = Number(inputDate) - offset * 60 * 1000;
+    newDate = Number(inputDate) - offset * 60 * 1000;
   }
-  return utcDate;
+  return newDate;
 };
