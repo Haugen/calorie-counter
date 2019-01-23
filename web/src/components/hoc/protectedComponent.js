@@ -12,17 +12,26 @@ const protectedComponent = (WrappedComponent, allowedRoles) => {
     };
 
     async componentDidMount() {
-      const result = await cFetcher(
-        '/user/auth',
-        'GET',
-        null,
-        this.props.token
-      );
+      if (this.props.token) {
+        const result = await cFetcher(
+          '/user/auth',
+          'GET',
+          null,
+          this.props.token
+        );
 
-      if (allowedRoles.indexOf(result.data.role) > -1) {
-        this.setState({
-          isAllowed: true
-        });
+        if (result.hasError) {
+          return this.setState({
+            loading: false
+          });
+        }
+
+        if (allowedRoles.indexOf(result.data.role) > -1) {
+          return this.setState({
+            isAllowed: true,
+            loading: false
+          });
+        }
       }
 
       this.setState({
@@ -32,7 +41,7 @@ const protectedComponent = (WrappedComponent, allowedRoles) => {
 
     render() {
       if (this.state.isAllowed) {
-        return <WrappedComponent test={42} {...this.props} />;
+        return <WrappedComponent {...this.props} />;
       }
       if (!this.state.loading && !this.state.isAllowed) {
         return <Redirect noThrow to="/" />;

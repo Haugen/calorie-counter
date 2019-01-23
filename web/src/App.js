@@ -13,9 +13,9 @@ import AdminListUsersPage from './pages/admin/ListUsers';
 
 class App extends Component {
   state = {
-    authenticated: false,
     token: null,
     userId: null,
+    userRole: null,
     messages: [],
     authLoading: false
   };
@@ -51,9 +51,9 @@ class App extends Component {
     if (localStorage.getItem('userId')) {
       this.setState({
         ...this.state,
-        authenticated: true,
         token: localStorage.getItem('token'),
-        userId: localStorage.getItem('userId')
+        userId: localStorage.getItem('userId'),
+        userRole: localStorage.getItem('userRole')
       });
     }
   }
@@ -61,14 +61,15 @@ class App extends Component {
   handleSuccessfulLogin = userData => {
     this.setState({
       ...this.state,
-      authenticated: true,
       token: userData.data.token,
       userId: userData.data.userId,
+      userRole: userData.data.userRole,
       authLoading: true
     });
 
     localStorage.setItem('token', userData.data.token);
     localStorage.setItem('userId', userData.data.userId);
+    localStorage.setItem('userRole', userData.data.userRole);
     const remainingMilliseconds = 60 * 60 * 1000;
     const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
     localStorage.setItem('expiryDate', expiryDate.toISOString());
@@ -78,13 +79,13 @@ class App extends Component {
 
   logoutHandler = () => {
     this.setState({
-      authenticated: false,
       token: null,
       userId: null
     });
     localStorage.removeItem('token');
     localStorage.removeItem('expiryDate');
     localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
   };
 
   setAutoLogout = milliseconds => {
@@ -152,7 +153,11 @@ class App extends Component {
 
     return (
       <>
-        <Toolbar auth={this.isAuth()} logout={this.logoutHandler} />
+        <Toolbar
+          auth={this.isAuth()}
+          role={this.state.userRole}
+          logout={this.logoutHandler}
+        />
 
         {this.state.messages.length > 0 ? (
           <Modal messages={this.state.messages} onClose={this.clearMessages} />

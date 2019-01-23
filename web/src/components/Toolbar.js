@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Link } from '@reach/router';
 
+import AdminMenu from './AdminMenu';
+
 export default props => {
   if (!props.auth) return null;
 
@@ -34,6 +36,7 @@ export default props => {
               + Add meal
             </Link>
           </li>
+          <AdminMenu role={props.role} />
           <li className="nav-item">
             <button onClick={props.logout} className="nav-link btn btn-link">
               Logout
