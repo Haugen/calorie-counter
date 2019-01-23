@@ -4,6 +4,16 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
+exports.authUser = async (req, res, next) => {
+  res.status(200).json({
+    message: 'User authenticated',
+    data: {
+      userId: req.userId,
+      role: req.userRole
+    }
+  });
+};
+
 /**
  * POST /user/signup
  * Sign user up. Returns the email address used for signing up.

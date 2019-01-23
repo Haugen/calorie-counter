@@ -6,6 +6,8 @@ const userController = require('../controllers/user');
 const validators = require('../middleware/validator');
 const auth = require('../middleware/auth');
 
+router.get('/auth', auth(), userController.authUser);
+
 router.post('/signup', validators.signup, userController.postSignup);
 router.post('/login', userController.postLogin);
 router.post('/delete/:id', auth('manager', 'admin'), userController.postDelete);

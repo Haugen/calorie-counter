@@ -9,6 +9,8 @@ import LoginPage from './pages/Login';
 import EditMealPage from './pages/EditMeal';
 import ListMealsPage from './pages/ListMeals';
 
+import AdminListUsersPage from './pages/admin/ListUsers';
+
 class App extends Component {
   state = {
     authenticated: false,
@@ -135,6 +137,11 @@ class App extends Component {
               token={this.state.token}
               setMessages={this.setMessages}
               path="/"
+            />
+            <AdminListUsersPage
+              token={this.state.token}
+              setMessages={this.setMessages}
+              path="admin/users"
             />
           </Router>
         );
