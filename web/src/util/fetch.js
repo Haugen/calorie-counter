@@ -13,8 +13,6 @@ export default async (resource, method = 'GET', body = null, token = null) => {
     options.headers.Authorization = 'Baerer ' + token;
   }
 
-  console.log(options);
-
   try {
     const response = await fetch(BASE_URL + resource, options);
     const result = await response.json();

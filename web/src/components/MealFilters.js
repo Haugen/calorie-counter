@@ -60,7 +60,12 @@ class MealFilters extends Component {
             isClearable={true}
           />
         </div>
-        <button onClick={this.props.onHandleFiltering}>Filter meals</button>
+        <button
+          className="btn btn-primary"
+          onClick={this.props.onHandleFiltering}
+        >
+          Filter meals
+        </button>
       </>
     );
   }

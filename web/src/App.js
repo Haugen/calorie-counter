@@ -14,7 +14,8 @@ class App extends Component {
     authenticated: false,
     token: null,
     userId: null,
-    messages: []
+    messages: [],
+    authLoading: false
   };
 
   setMessages = messages => {
@@ -60,7 +61,8 @@ class App extends Component {
       ...this.state,
       authenticated: true,
       token: userData.data.token,
-      userId: userData.data.userId
+      userId: userData.data.userId,
+      authLoading: true
     });
 
     localStorage.setItem('token', userData.data.token);
@@ -69,6 +71,7 @@ class App extends Component {
     const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
     localStorage.setItem('expiryDate', expiryDate.toISOString());
     this.setAutoLogout(remainingMilliseconds);
+    this.setState({ authLoading: false });
   };
 
   logoutHandler = () => {
@@ -88,51 +91,61 @@ class App extends Component {
     }, milliseconds);
   };
 
+  isAuth = () => {
+    const storageToken = localStorage.getItem('token');
+    const stateToken = this.state.token;
+    return stateToken !== null && storageToken === stateToken;
+  };
+
   render() {
     let pageContent;
 
-    if (!this.state.authenticated) {
-      pageContent = (
-        <Router>
-          <SignupPage
-            setMessages={this.setMessages}
-            onSuccess={this.handleSuccessfulSignup}
-            path="signup"
-          />
-          <LoginPage
-            setMessages={this.setMessages}
-            onSuccess={this.handleSuccessfulLogin}
-            path="/"
-          />
-        </Router>
-      );
+    if (!this.state.loading) {
+      if (!this.isAuth()) {
+        pageContent = (
+          <Router>
+            <SignupPage
+              setMessages={this.setMessages}
+              onSuccess={this.handleSuccessfulSignup}
+              path="signup"
+            />
+            <LoginPage
+              setMessages={this.setMessages}
+              onSuccess={this.handleSuccessfulLogin}
+              path="/"
+            />
+          </Router>
+        );
+      } else {
+        pageContent = (
+          <Router>
+            <EditMealPage
+              token={this.state.token}
+              setMessages={this.setMessages}
+              path="/add-meal"
+              editMode={false}
+            />
+            <EditMealPage
+              token={this.state.token}
+              setMessages={this.setMessages}
+              path="/edit-meal/:id"
+              editMode={true}
+            />
+            <ListMealsPage
+              token={this.state.token}
+              setMessages={this.setMessages}
+              path="/"
+            />
+          </Router>
+        );
+      }
     } else {
-      pageContent = (
-        <Router>
-          <EditMealPage
-            token={this.state.token}
-            setMessages={this.setMessages}
-            path="/add-meal"
-            editMode={false}
-          />
-          <EditMealPage
-            token={this.state.token}
-            setMessages={this.setMessages}
-            path="/edit-meal/:id"
-            editMode={true}
-          />
-          <ListMealsPage
-            token={this.state.token}
-            setMessages={this.setMessages}
-            path="/"
-          />
-        </Router>
-      );
+      pageContent = null;
     }
 
     return (
       <>
-        <Toolbar auth={this.state.authenticated} logout={this.logoutHandler} />
+        <Toolbar auth={this.isAuth()} logout={this.logoutHandler} />
 
         {this.state.messages.length > 0 ? (
           <Modal messages={this.state.messages} onClose={this.clearMessages} />
