@@ -88,7 +88,8 @@ exports.postLogin = async (req, res, next) => {
       message: 'User successfully logged in.',
       data: {
         token: token,
-        userId: user._id.toString()
+        userId: user._id.toString(),
+        userRole: user.role
       }
     });
   } catch (error) {
