@@ -4,7 +4,8 @@ import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { BASE_URL, convertDate } from '../util/helpers';
+import { convertDate } from '../util/helpers';
+import cFetcher from '../util/fetch';
 
 class Login extends Component {
   state = {
@@ -20,23 +21,16 @@ class Login extends Component {
 
   async componentDidMount() {
     if (this.props.editMode) {
-      const response = await fetch(BASE_URL + '/meals/' + this.props.id, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + this.props.token
-        }
-      });
+      const result = await cFetcher(
+        '/meals/' + this.props.id,
+        'GET',
+        null,
+        this.props.token
+      );
 
-      if (response.status !== 200) {
-        const result = await response.json();
-
-        return this.props.setMessages({
-          type: 'warning',
-          message: result.error
-        });
+      if (result.hasError) {
+        return this.props.setMessages(result.errorMessages);
       }
-
-      const result = await response.json();
 
       this.setState({
         formData: {
@@ -68,54 +62,25 @@ class Login extends Component {
     event.preventDefault();
 
     const method = this.props.editMode ? 'PUT' : 'POST';
-    const contentBody = {
+    const body = {
       text: formData.text,
       calories: formData.calories,
       date: convertDate(formData.date, 'ltu')
     };
-    contentBody._id = this.props.editMode ? this.state.formData.id : null;
-    let url = BASE_URL + '/meals';
+    body._id = this.props.editMode ? this.state.formData.id : null;
+    let url = '/meals';
     url += this.props.editMode ? '/' + this.state.formData.id : '';
 
-    const response = await fetch(url, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.props.token
-      },
-      body: JSON.stringify(contentBody)
-    });
+    const result = await cFetcher(
+      url,
+      method,
+      JSON.stringify(body),
+      this.props.token
+    );
 
-    // If validation failed.
-    if (response.status === 422) {
-      const result = await response.json();
-
-      const errors = [];
-
-      if (result.errors) {
-        result.errors.forEach(error => {
-          errors.push({
-            type: 'warning',
-            message: error.msg
-          });
-        });
-      }
-
-      return this.props.setMessages(errors);
+    if (result.hasError) {
+      return this.props.setMessages(result.errorMessages);
     }
-
-    // If unauthorized or other error.
-    if (response.status !== 200) {
-      const result = await response.json();
-
-      return this.props.setMessages({
-        type: 'warning',
-        message: result.error
-      });
-    }
-
-    // Meal sucessfully added or edited.
-    const result = await response.json();
 
     if (!this.props.editMode) {
       this.setState({

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Link, Redirect } from '@reach/router';
 
-import { BASE_URL } from '../util/helpers';
+import cFetcher from '../util/fetch';
 
 class Signup extends Component {
   state = {
@@ -25,46 +25,17 @@ class Signup extends Component {
   handleFormPost = async (event, formData) => {
     event.preventDefault();
 
-    const response = await fetch(BASE_URL + '/user/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: formData.email,
-        password: formData.password
-      })
+    const body = JSON.stringify({
+      email: formData.email,
+      password: formData.password
     });
 
-    // If validation failed.
-    if (response.status === 422) {
-      const result = await response.json();
+    const result = await cFetcher('/user/signup', 'POST', body);
 
-      const errors = [];
-
-      if (result.errors) {
-        result.errors.forEach(error => {
-          errors.push({
-            type: 'warning',
-            message: error.msg
-          });
-        });
-      }
-
-      return this.props.setMessages(errors);
+    if (result.hasError) {
+      return this.props.setMessages(result.errorMessages);
     }
 
-    // Validation ok, but something else fails.
-    if (response.status !== 201) {
-      const result = await response.json();
-
-      return this.props.setMessages({
-        type: 'warning',
-        message: result.message
-      });
-    }
-
-    // Account sucessfully created.
     this.setState({ signupSuccess: true });
     this.props.onSuccess();
   };

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import Meal from '../components/Meal';
 import MealFilters from '../components/MealFilters';
-import { BASE_URL, convertDate } from '../util/helpers';
+import { convertDate } from '../util/helpers';
+import cFetcher from '../util/fetch';
 
 class Login extends Component {
   state = {
@@ -18,44 +19,17 @@ class Login extends Component {
   };
 
   async componentDidMount() {
-    const response = await this.fetchMeals(BASE_URL + '/meals');
-
-    if (response.status !== 200) {
-      const result = await response.json();
-
-      this.setState({
-        loading: false
-      });
-
-      return this.props.setMessages({
-        type: 'warning',
-        message: result.error
-      });
-    }
-
-    const result = await response.json();
-
-    this.setState({
-      meals: result.data.meals,
-      loading: false
-    });
+    this.handleFiltering();
   }
 
-  fetchMeals = async url => {
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.props.token
-      }
-    });
-
+  fetchMeals = async resource => {
+    const response = await cFetcher(resource, 'GET', null, this.props.token);
     return response;
   };
 
   handleFilterChange = (event, filter) => {
     this.setState(
       {
-        ...this.state,
         filters: {
           ...this.state.filters,
           [filter]: event
@@ -67,15 +41,14 @@ class Login extends Component {
 
   handleFiltering = async () => {
     this.setState({
-      ...this.state,
       loading: true
     });
 
-    const response = await this.fetchMeals(
-      BASE_URL + '/meals' + this.state.activeQuery
-    );
+    const result = await this.fetchMeals('/meals' + this.state.activeQuery);
 
-    const result = await response.json();
+    if (result.hasError) {
+      return this.props.setMessages(result.errorMessages);
+    }
 
     this.setState({
       meals: result.data.meals,
@@ -99,27 +72,20 @@ class Login extends Component {
     }
 
     this.setState({
-      ...this.state,
       activeQuery: query
     });
   };
 
   handleDelete = async mealId => {
-    const response = await fetch(BASE_URL + '/meals/' + mealId, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.props.token
-      }
-    });
+    const result = await cFetcher(
+      '/meals/' + mealId,
+      'DELETE',
+      null,
+      this.props.token
+    );
 
-    if (response.status !== 200) {
-      const result = await response.json();
-
-      return this.props.setMessages({
-        type: 'warning',
-        message: result.error
-      });
+    if (result.hasError) {
+      return this.props.setMessages(result.errorMessages);
     }
 
     const newMeals = this.state.meals.filter(meal => {
@@ -127,8 +93,7 @@ class Login extends Component {
     });
 
     this.setState({
-      meals: newMeals,
-      loading: false
+      meals: newMeals
     });
   };
 
@@ -150,7 +115,7 @@ class Login extends Component {
         );
       });
     } else if (!this.state.loading) {
-      content = 'No meals yet.';
+      content = 'No meals to display.';
     }
 
     return (

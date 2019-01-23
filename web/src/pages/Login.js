@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Link } from '@reach/router';
-import { BASE_URL } from '../util/helpers';
+import cFetcher from '../util/fetch';
 
 class Login extends Component {
   state = {
@@ -24,37 +24,17 @@ class Login extends Component {
   handleFormPost = async (event, formData) => {
     event.preventDefault();
 
-    const response = await fetch(BASE_URL + '/user/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: formData.email,
-        password: formData.password
-      })
+    const body = JSON.stringify({
+      email: formData.email,
+      password: formData.password
     });
 
-    // If wrong credentials.
-    if (response.status === 401) {
-      const result = await response.json();
+    const result = await cFetcher('/user/login', 'POST', body);
 
-      return this.props.setMessages({
-        type: 'warning',
-        message: result.message
-      });
-    }
-    if (response.status !== 200) {
-      const result = await response.json();
-
-      return this.props.setMessages({
-        type: 'warning',
-        message: result.message
-      });
+    if (result.hasError) {
+      return this.props.setMessages(result.errorMessages);
     }
 
-    // Account sucessfully created.
-    const result = await response.json();
     this.setState({ loginSuccess: true });
     this.props.onSuccess(result);
   };
