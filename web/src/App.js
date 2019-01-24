@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Router, Link } from '@reach/router';
+import { Router, navigate, Redirect } from '@reach/router';
 
 import Toolbar from './components/Toolbar';
 import Modal from './components/Modal';
@@ -86,6 +86,8 @@ class App extends Component {
     localStorage.removeItem('expiryDate');
     localStorage.removeItem('userId');
     localStorage.removeItem('userRole');
+
+    navigate('/');
   };
 
   setAutoLogout = milliseconds => {
@@ -164,12 +166,7 @@ class App extends Component {
         ) : null}
 
         <div className="container">
-          <div className="col-12">
-            <Link to="/">
-              <h1>Calorie Counter!</h1>
-            </Link>
-            {pageContent}
-          </div>
+          <div className="col-12">{pageContent}</div>
         </div>
       </>
     );

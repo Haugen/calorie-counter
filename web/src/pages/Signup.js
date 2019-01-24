@@ -49,7 +49,7 @@ class Signup extends Component {
           <p>
             Already have an account? <Link to="/">Go login!</Link>
           </p>
-          <h2>Sign up</h2>
+          <h1>Sign up</h1>
           <form onSubmit={e => this.handleFormPost(e, this.state.formData)}>
             <div className="form-group">
               <label htmlFor="email">Email address</label>

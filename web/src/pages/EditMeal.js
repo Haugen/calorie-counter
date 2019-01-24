@@ -105,7 +105,7 @@ class Login extends Component {
       <>
         {!this.state.loading ? (
           <>
-            <h2>{this.props.editMode ? 'Edit meal' : 'Add new meal'}</h2>
+            <h1>{this.props.editMode ? 'Edit meal' : 'Add new meal'}</h1>
             <form onSubmit={e => this.handleFormPost(e, this.state.formData)}>
               <div className="form-group">
                 <label>Date and time</label>

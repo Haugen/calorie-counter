@@ -120,7 +120,7 @@ class Login extends Component {
 
     return (
       <>
-        <h2>My meals</h2>
+        <h1>My meals</h1>
         <MealFilters
           filters={this.state.filters}
           onFilterChange={this.handleFilterChange}

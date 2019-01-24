@@ -45,7 +45,7 @@ class Login extends Component {
         <p>
           Don't yet have an account? <Link to="signup">Sign up now!</Link>
         </p>
-        <h2>Login</h2>
+        <h1>Login</h1>
         <form onSubmit={e => this.handleFormPost(e, this.state.formData)}>
           <div className="form-group">
             <label htmlFor="email">Email address</label>

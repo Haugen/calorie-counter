@@ -28,7 +28,11 @@ class ListUsers extends Component {
   }
 
   render() {
-    return <>Managers and admins only!</>;
+    return (
+      <>
+        <h1>Manager users</h1>+ Add new user
+      </>
+    );
   }
 }
 
