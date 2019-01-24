@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Router, navigate, Redirect } from '@reach/router';
+import { Router, navigate } from '@reach/router';
 
 import Toolbar from './components/Toolbar';
 import Modal from './components/Modal';
@@ -8,8 +8,8 @@ import SignupPage from './pages/Signup';
 import LoginPage from './pages/Login';
 import EditMealPage from './pages/EditMeal';
 import ListMealsPage from './pages/ListMeals';
-
 import AdminListUsersPage from './pages/admin/ListUsers';
+import AdminListMealsPage from './pages/admin/ListMeals';
 
 class App extends Component {
   state = {
@@ -145,6 +145,11 @@ class App extends Component {
               token={this.state.token}
               setMessages={this.setMessages}
               path="admin/users"
+            />
+            <AdminListMealsPage
+              token={this.state.token}
+              setMessages={this.setMessages}
+              path="admin/meals"
             />
           </Router>
         );

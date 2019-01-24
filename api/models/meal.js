@@ -20,7 +20,7 @@ const MealSchema = new Schema({
   },
   user: {
     type: Schema.Types.ObjectId,
-    red: 'User'
+    ref: 'User'
   }
 });
 

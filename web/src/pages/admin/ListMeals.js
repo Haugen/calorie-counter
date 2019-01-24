@@ -4,14 +4,14 @@ import protectedComponent from '../../components/hoc/protectedComponent';
 import cFetcher from '../../util/fetch';
 import GenericList from '../../components/GenericList';
 
-class ListUsers extends Component {
+class ListMeals extends Component {
   state = {
-    users: []
+    meals: []
   };
 
   async componentDidMount() {
     const result = await cFetcher(
-      '/admin/users',
+      '/admin/meals',
       'GET',
       null,
       this.props.token
@@ -22,19 +22,19 @@ class ListUsers extends Component {
     }
 
     this.setState({
-      users: result.data.users
+      meals: result.data.meals
     });
   }
 
   render() {
     return (
       <>
-        <h1>Manager users</h1>
-        <p>+ Add new user</p>
-        <GenericList content="users" users={this.state.users} />
+        <h1>Manager meals</h1>
+        <p>+ Add new meal</p>
+        <GenericList content="meals" meals={this.state.meals} />
       </>
     );
   }
 }
 
-export default protectedComponent(ListUsers, ['manager', 'admin']);
+export default protectedComponent(ListMeals, ['admin']);

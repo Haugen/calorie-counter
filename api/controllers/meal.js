@@ -9,7 +9,7 @@ const { cError, timeNumber } = require('../util/helpers');
  *
  * Permissions: user, manager, admin.
  */
-exports.getMeals = async (req, res) => {
+exports.getMeals = async (req, res, next) => {
   const fromDate = req.query.fromDate;
   let toDate = req.query.toDate;
   const fromTime = timeNumber(req.query.fromTime);
@@ -35,13 +35,17 @@ exports.getMeals = async (req, res) => {
 
   query.sort({ date: 'desc' });
 
-  const meals = await query;
+  try {
+    const meals = await query;
 
-  res.json({
-    data: {
-      meals: meals
-    }
-  });
+    res.json({
+      data: {
+        meals: meals
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -169,7 +173,7 @@ exports.putMeal = async (req, res, next) => {
  *
  * Permissions: user, manager, admin.
  */
-exports.deleteMeal = async (req, res) => {
+exports.deleteMeal = async (req, res, next) => {
   const mealId = req.params.id;
 
   try {

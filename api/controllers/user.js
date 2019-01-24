@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
-exports.authUser = async (req, res, next) => {
+exports.authUser = async (req, res) => {
   res.status(200).json({
     message: 'User authenticated',
     data: {

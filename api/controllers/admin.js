@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Meal = require('../models/meal');
 
 /**
  * GET /admin/users
@@ -6,7 +7,7 @@ const User = require('../models/user');
  *
  * Permissions: manager, admin.
  */
-exports.getUsers = async (req, res) => {
+exports.getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
 
@@ -27,8 +28,17 @@ exports.getUsers = async (req, res) => {
  *
  * Permissions: admin.
  */
-exports.getMeals = (req, res) => {
-  res.json({
-    message: 'GET Admin all meals.'
-  });
+exports.getMeals = async (req, res, next) => {
+  try {
+    const meals = await Meal.find().populate('user');
+
+    res.json({
+      message: 'ADMIN all meals.',
+      data: {
+        meals: meals
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
 };
