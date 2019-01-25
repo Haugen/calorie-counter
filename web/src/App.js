@@ -8,6 +8,7 @@ import SignupPage from './pages/Signup';
 import LoginPage from './pages/Login';
 import EditMealPage from './pages/EditMeal';
 import ListMealsPage from './pages/ListMeals';
+import UserSettingsPage from './pages/UserSettings';
 import AdminListUsersPage from './pages/admin/ListUsers';
 import AdminListMealsPage from './pages/admin/ListMeals';
 
@@ -141,6 +142,12 @@ class App extends Component {
               setMessages={this.setMessages}
               path="/"
             />
+            <UserSettingsPage
+              token={this.state.token}
+              userId={this.state.userId}
+              setMessages={this.setMessages}
+              path="/user-settings/:id"
+            />
             <AdminListUsersPage
               token={this.state.token}
               setMessages={this.setMessages}
@@ -162,6 +169,7 @@ class App extends Component {
       <>
         <Toolbar
           auth={this.isAuth()}
+          userId={this.state.userId}
           role={this.state.userRole}
           logout={this.logoutHandler}
         />

@@ -3,7 +3,15 @@ const { validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const { cError } = require('../util/helpers');
 
+/**
+ * POST /user/auth
+ * Path for checking agaisn user permissions in previous middleware.
+ * Returns user id and role.
+ *
+ * Permissions: manager, admin
+ */
 exports.authUser = async (req, res) => {
   res.status(200).json({
     message: 'User authenticated',
@@ -12,6 +20,43 @@ exports.authUser = async (req, res) => {
       role: req.userRole
     }
   });
+};
+
+/**
+ * GET /user/:id
+ * Gets information about a single user.
+ *
+ * Permissions: manager, admin
+ */
+exports.getUser = async (req, res, next) => {
+  const userId = req.params.id;
+
+  try {
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      cError('User not found', 404);
+    }
+
+    if (
+      user._id.toString() !== req.userId &&
+      req.userRole !== 'admin' &&
+      req.userRole !== 'manager'
+    ) {
+      cError('Not authenticated', 401);
+    }
+
+    res.status(200).json({
+      message: 'User data',
+      data: {
+        userId: user._id,
+        email: user.email,
+        calories: user.dailyCalories
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -98,14 +143,14 @@ exports.postLogin = async (req, res, next) => {
 };
 
 /**
- * POST /user/delete
+ * DELETE /user/:id
  * Deletes a user. Returns deleted user?
  *
  * Permissions: admin
  */
-exports.postDelete = (req, res) => {
+exports.deleteUser = (req, res) => {
   res.json({
-    message: 'POST Deletes user.'
+    message: 'DELETE Deletes user.'
   });
 };
 
@@ -115,8 +160,45 @@ exports.postDelete = (req, res) => {
  *
  * Permissions: user, manager, admin
  */
-exports.putEdit = (req, res) => {
-  res.json({
-    message: 'PUT Edits user.'
-  });
+exports.putEdit = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: 'Validation failed.',
+      errors: errors.array()
+    });
+  }
+
+  const userId = req.params.id;
+  const calories = req.body.calories;
+
+  try {
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      cError('Meal not found', 404);
+    }
+
+    if (
+      user._id.toString() !== req.userId &&
+      req.userRole !== 'admin' &&
+      req.userRole !== 'manager'
+    ) {
+      cError('Not authenticated', 401);
+    }
+
+    user.dailyCalories = calories;
+    await user.save();
+
+    res.status(200).json({
+      message: 'User updated',
+      data: {
+        userId: user._id,
+        email: user.email,
+        calories: user.dailyCalories
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
 };

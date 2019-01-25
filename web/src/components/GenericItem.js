@@ -1,13 +1,17 @@
 import React from 'react';
 
 import { Link } from '@reach/router';
+import { dateForDisplay } from '../util/helpers';
 
 const GenericItem = props => {
   if (props.content === 'user') {
+    const editUrl = '/user-settings/' + props.userId;
     return (
       <div>
-        E-mail: {props.email}, Calories: {props.calories}, UserId:{' '}
-        {props.userId}
+        E-mail: {props.email}, Calories: {props.calories}
+        <Link className="btn btn-secondary btn-sm" to={editUrl}>
+          Edit
+        </Link>
       </div>
     );
   }
@@ -17,8 +21,8 @@ const GenericItem = props => {
 
     return (
       <div>
-        Text: {props.text}, Calories: {props.calories}, MealId: {props.mealId},
-        Date: {props.date}, User: {props.user.email}
+        Text: {props.text}, Calories: {props.calories}, Date:{' '}
+        {dateForDisplay(props.date)}, User: {props.user.email}
         <Link className="btn btn-secondary btn-sm" to={editUrl}>
           Edit
         </Link>

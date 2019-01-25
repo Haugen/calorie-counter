@@ -7,6 +7,8 @@ import AdminMenu from './AdminMenu';
 const Toolbar = props => {
   if (!props.auth) return null;
 
+  const userSettingsUrl = 'user-settings/' + props.userId;
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
@@ -34,6 +36,11 @@ const Toolbar = props => {
           <li className="nav-item">
             <Link className="nav-link" to="/add-meal">
               + Add meal
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to={userSettingsUrl}>
+              Settings
             </Link>
           </li>
           <AdminMenu role={props.role} />

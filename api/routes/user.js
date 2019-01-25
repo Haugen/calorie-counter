@@ -7,11 +7,13 @@ const validators = require('../middleware/validator');
 const auth = require('../middleware/auth');
 
 router.get('/auth', auth(), userController.authUser);
+router.get('/:id', auth(), userController.getUser);
 
 router.post('/signup', validators.signup, userController.postSignup);
 router.post('/login', userController.postLogin);
-router.post('/delete/:id', auth('manager', 'admin'), userController.postDelete);
 
-router.put('/edit/:id', auth(), userController.putEdit);
+router.delete('/:id', auth('manager', 'admin'), userController.deleteUser);
+
+router.put('/edit/:id', auth(), validators.editUser, userController.putEdit);
 
 module.exports = router;

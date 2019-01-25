@@ -9,9 +9,9 @@ const auth = require('../middleware/auth');
 router.get('/meals', auth(), mealController.getMeals);
 router.get('/meals/:id', auth(), mealController.getMeal);
 
-router.post('/meals', auth(), validators.addMeal, mealController.postMeal);
+router.post('/meals', auth(), validators.editMeal, mealController.postMeal);
 
-router.put('/meals/:id', auth(), mealController.putMeal);
+router.put('/meals/:id', auth(), validators.editMeal, mealController.putMeal);
 
 router.delete('/meals/:id', auth(), mealController.deleteMeal);
 

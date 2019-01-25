@@ -103,9 +103,9 @@ class EditMeals extends Component {
   render() {
     return (
       <>
+        <h1>{this.props.editMode ? 'Edit meal' : 'Add new meal'}</h1>
         {!this.state.loading ? (
           <>
-            <h1>{this.props.editMode ? 'Edit meal' : 'Add new meal'}</h1>
             <form onSubmit={e => this.handleFormPost(e, this.state.formData)}>
               <div className="form-group">
                 <label>Date and time</label>
