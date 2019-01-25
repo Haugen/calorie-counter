@@ -26,12 +26,37 @@ class AdminListMeals extends Component {
     });
   }
 
+  handleDelete = async mealId => {
+    const result = await cFetcher(
+      '/meals/' + mealId,
+      'DELETE',
+      null,
+      this.props.token
+    );
+
+    if (result.hasError) {
+      return this.props.setMessages(result.errorMessages);
+    }
+
+    const newMeals = this.state.meals.filter(meal => {
+      return meal._id !== mealId;
+    });
+
+    this.setState({
+      meals: newMeals
+    });
+  };
+
   render() {
     return (
       <>
         <h1>Manager meals</h1>
         <p>+ Add new meal</p>
-        <GenericList content="meals" meals={this.state.meals} />
+        <GenericList
+          content="meals"
+          meals={this.state.meals}
+          onDelete={this.handleDelete}
+        />
       </>
     );
   }

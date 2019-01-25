@@ -32,6 +32,7 @@ const GenericList = props => {
           calories={meal.calories}
           mealId={meal._id}
           user={meal.user}
+          onDelete={props.onDelete}
         />
       );
     });

@@ -15,6 +15,12 @@ const GenericItem = props => {
       <div>
         Text: {props.text}, Calories: {props.calories}, MealId: {props.mealId},
         Date: {props.date}, User: {props.user.email}
+        <button
+          className="btn btn-danger btn-sm"
+          onClick={() => props.onDelete(props.mealId)}
+        >
+          Delete
+        </button>
       </div>
     );
   }
