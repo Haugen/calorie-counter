@@ -4,7 +4,7 @@ import protectedComponent from '../../components/hoc/protectedComponent';
 import cFetcher from '../../util/fetch';
 import GenericList from '../../components/GenericList';
 
-class ListMeals extends Component {
+class AdminListMeals extends Component {
   state = {
     meals: []
   };
@@ -37,4 +37,4 @@ class ListMeals extends Component {
   }
 }
 
-export default protectedComponent(ListMeals, ['admin']);
+export default protectedComponent(AdminListMeals, ['admin']);

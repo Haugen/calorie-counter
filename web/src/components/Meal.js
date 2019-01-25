@@ -4,7 +4,7 @@ import { Link } from '@reach/router';
 
 import { dateForDisplay } from '../util/helpers';
 
-export default props => {
+const Meal = props => {
   const editUrl = `/edit-meal/${props.id}`;
 
   return (
@@ -34,3 +34,5 @@ export default props => {
     </div>
   );
 };
+
+export default Meal;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default props => {
+const GenericItem = props => {
   if (props.content === 'user') {
     return (
       <div>
@@ -21,3 +21,5 @@ export default props => {
 
   return null;
 };
+
+export default GenericItem;

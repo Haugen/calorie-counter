@@ -4,7 +4,7 @@ import { Link } from '@reach/router';
 
 import AdminMenu from './AdminMenu';
 
-export default props => {
+const Toolbar = props => {
   if (!props.auth) return null;
 
   return (
@@ -47,3 +47,5 @@ export default props => {
     </nav>
   );
 };
+
+export default Toolbar;

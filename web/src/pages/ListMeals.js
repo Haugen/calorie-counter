@@ -5,7 +5,7 @@ import MealFilters from '../components/MealFilters';
 import { convertDate } from '../util/helpers';
 import cFetcher from '../util/fetch';
 
-class Login extends Component {
+class ListMeals extends Component {
   state = {
     meals: [],
     filters: {
@@ -132,4 +132,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default ListMeals;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import GenericItem from './GenericItem';
 
-export default props => {
+const GenericList = props => {
   let content = [];
 
   if (props.content === 'users') {
@@ -41,3 +41,5 @@ export default props => {
 
   return null;
 };
+
+export default GenericList;

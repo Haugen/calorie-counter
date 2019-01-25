@@ -7,7 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { convertDate } from '../util/helpers';
 import cFetcher from '../util/fetch';
 
-class Login extends Component {
+class EditMeals extends Component {
   state = {
     formData: {
       id: '',
@@ -152,4 +152,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default EditMeals;
