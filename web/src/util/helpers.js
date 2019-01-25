@@ -27,3 +27,12 @@ module.exports.dateForDisplay = date => {
   });
   return newDate;
 };
+
+// Helper function to get total number of minutes based on time.
+module.exports.timeNumber = date => {
+  if (isNaN(date) || !date) return null;
+  date = this.convertDate(date, 'ltu');
+  const hours = new Date(Number(date)).getUTCHours();
+  const minutes = new Date(Number(date)).getUTCMinutes();
+  return hours * 60 + minutes;
+};

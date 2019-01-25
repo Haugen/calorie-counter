@@ -61,7 +61,6 @@ class App extends Component {
 
   handleSuccessfulLogin = userData => {
     this.setState({
-      ...this.state,
       token: userData.data.token,
       userId: userData.data.userId,
       userRole: userData.data.userRole,
@@ -81,7 +80,8 @@ class App extends Component {
   logoutHandler = () => {
     this.setState({
       token: null,
-      userId: null
+      userId: null,
+      userRole: null
     });
     localStorage.removeItem('token');
     localStorage.removeItem('expiryDate');
@@ -101,6 +101,12 @@ class App extends Component {
     const storageToken = localStorage.getItem('token');
     const stateToken = this.state.token;
     return stateToken !== null && storageToken === stateToken;
+  };
+
+  handleUpdateUserSettings = settings => {
+    this.setState({
+      userSettings: settings
+    });
   };
 
   render() {
@@ -146,6 +152,7 @@ class App extends Component {
               token={this.state.token}
               userId={this.state.userId}
               setMessages={this.setMessages}
+              updateUserSettings={this.handleUpdateUserSettings}
               path="/user-settings/:id"
             />
             <AdminListUsersPage

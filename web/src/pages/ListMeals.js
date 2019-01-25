@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Meal from '../components/Meal';
 import MealFilters from '../components/MealFilters';
-import { convertDate } from '../util/helpers';
+import { convertDate, timeNumber } from '../util/helpers';
 import cFetcher from '../util/fetch';
 
 class ListMeals extends Component {
@@ -50,8 +50,24 @@ class ListMeals extends Component {
       return this.props.setMessages(result.errorMessages);
     }
 
+    const meals = [];
+
+    const fromTime = timeNumber(this.state.filters.fromTime) || 0;
+    const toTime = timeNumber(this.state.filters.toTime) || 1440;
+
+    // Doing the time filtering and color calculation here on the front end.
+    // TODO! Get users expected daily calories. Now hard coded to 2000.
+    result.data.meals.forEach(day => {
+      day.dayMeals.forEach(meal => {
+        meal.overDaily = day.dayTotalCalories > 2000;
+        if (meal.time >= fromTime && meal.time <= toTime) {
+          meals.push(meal);
+        }
+      });
+    });
+
     this.setState({
-      meals: result.data.meals,
+      meals: meals,
       loading: false
     });
   };
@@ -109,6 +125,7 @@ class ListMeals extends Component {
             text={meal.text}
             calories={meal.calories}
             date={meal.date}
+            overDaily={meal.overDaily}
             id={meal._id}
             onDelete={this.handleDelete}
           />

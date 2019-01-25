@@ -61,6 +61,10 @@ class UserSettings extends Component {
       return this.props.setMessages(result.errorMessages);
     }
 
+    this.props.updateUserSettings({
+      dailyCalories: result.data.calories
+    });
+
     return this.props.setMessages({
       type: 'success',
       message: result.message

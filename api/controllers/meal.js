@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator/check');
+const mongoose = require('mongoose');
 
 const Meal = require('../models/meal');
 const { cError, timeNumber } = require('../util/helpers');
@@ -10,33 +11,44 @@ const { cError, timeNumber } = require('../util/helpers');
  * Permissions: user, manager, admin.
  */
 exports.getMeals = async (req, res, next) => {
-  const fromDate = req.query.fromDate;
-  let toDate = req.query.toDate;
-  const fromTime = timeNumber(req.query.fromTime);
-  const toTime = timeNumber(req.query.toTime);
-  // To add one second less than 24 hours to date query.
+  const fromDate = req.query.fromDate || new Date('2019-01-01').getTime();
+  let toDate = req.query.toDate || new Date().getTime();
+  const fromTime = timeNumber(req.query.fromTime) || 0;
+  const toTime = timeNumber(req.query.toTime) || 1440;
   const almostADay = 1000 * 60 * 60 * 24 - 1000;
   toDate = Number(toDate) + almostADay;
 
-  const query = Meal.find({ user: req.userId });
-
-  if (fromDate) {
-    query.where({ date: { $gte: fromDate } });
-  }
-  if (toDate) {
-    query.where({ date: { $lte: toDate } });
-  }
-  if (fromTime) {
-    query.where({ time: { $gte: fromTime } });
-  }
-  if (toTime) {
-    query.where({ time: { $lte: toTime } });
-  }
-
-  query.sort({ date: 'desc' });
-
   try {
-    const meals = await query;
+    const mealQuery = Meal.aggregate([
+      {
+        $match: {
+          $and: [
+            { user: mongoose.Types.ObjectId(req.userId) },
+            { date: { $gte: new Date(+fromDate) } },
+            { date: { $lte: new Date(+toDate) } }
+          ]
+        }
+      },
+      {
+        $project: {
+          aggDate: { $dateToString: { format: '%Y-%m-%d', date: '$date' } },
+          text: 1,
+          calories: 1,
+          date: 1,
+          time: 1
+        }
+      },
+      {
+        $group: {
+          _id: '$aggDate',
+          dayMeals: { $push: '$$ROOT' },
+          dayTotalCalories: { $sum: '$calories' }
+        }
+      }
+    ]);
+    mealQuery.sort({ date: 'desc' });
+
+    const meals = await mealQuery;
 
     res.json({
       data: {

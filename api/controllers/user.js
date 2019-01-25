@@ -51,6 +51,7 @@ exports.getUser = async (req, res, next) => {
       data: {
         userId: user._id,
         email: user.email,
+        role: user.role,
         calories: user.dailyCalories
       }
     });
