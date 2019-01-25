@@ -64,7 +64,7 @@ exports.getMeal = async (req, res, next) => {
       cError('Meal not found', 404);
     }
 
-    if (meal.user.toString() !== req.userId) {
+    if (meal.user.toString() !== req.userId && req.userRole !== 'admin') {
       cError('Not authenticated', 401);
     }
 
@@ -146,7 +146,7 @@ exports.putMeal = async (req, res, next) => {
       cError('Meal not found', 404);
     }
 
-    if (meal.user.toString() !== req.userId) {
+    if (meal.user.toString() !== req.userId && req.userRole !== 'admin') {
       cError('Not authenticated', 401);
     }
 
