@@ -11,7 +11,7 @@ const Meal = props => {
     <div className="card mb-3">
       <div className="card-body">
         <p className="card-text">
-          {props.text} {props.overDaily === true ? 'GREEN' : 'RED'}
+          {props.text} {props.overDaily === true ? 'RED' : 'GREEN'}
         </p>
         <div>
           <strong>Calories: </strong>

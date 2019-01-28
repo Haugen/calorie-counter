@@ -26,7 +26,7 @@ exports.authUser = async (req, res) => {
  * GET /user/:id
  * Gets information about a single user.
  *
- * Permissions: manager, admin
+ * Permissions: user, manager, admin
  */
 exports.getUser = async (req, res, next) => {
   const userId = req.params.id;

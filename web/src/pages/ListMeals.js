@@ -14,11 +14,28 @@ class ListMeals extends Component {
       fromTime: null,
       toTime: null
     },
+    dailyCalories: null,
     activeQuery: '',
     loading: true
   };
 
   async componentDidMount() {
+    const userId = localStorage.getItem('userId');
+    const result = await cFetcher(
+      '/user/' + userId,
+      'GET',
+      null,
+      this.props.token
+    );
+
+    if (result.hasError) {
+      return this.props.setMessages(result.errorMessages);
+    }
+
+    this.setState({
+      dailyCalories: result.data.calories
+    });
+
     this.handleFiltering();
   }
 
@@ -55,11 +72,9 @@ class ListMeals extends Component {
     const fromTime = timeNumber(this.state.filters.fromTime) || 0;
     const toTime = timeNumber(this.state.filters.toTime) || 1440;
 
-    // Doing the time filtering and color calculation here on the front end.
-    // TODO! Get users expected daily calories. Now hard coded to 2000.
     result.data.meals.forEach(day => {
       day.dayMeals.forEach(meal => {
-        meal.overDaily = day.dayTotalCalories > 2000;
+        meal.overDaily = day.dayTotalCalories > this.state.dailyCalories;
         if (meal.time >= fromTime && meal.time <= toTime) {
           meals.push(meal);
         }
