@@ -12,6 +12,7 @@ const GenericList = props => {
           key={user._id}
           content="user"
           email={user.email}
+          role={user.role}
           calories={user.dailyCalories}
           userId={user._id}
           onDelete={props.onDelete}

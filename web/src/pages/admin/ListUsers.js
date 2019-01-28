@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { Link } from '@reach/router';
+
 import protectedComponent from '../../components/hoc/protectedComponent';
 import cFetcher from '../../util/fetch';
 import GenericList from '../../components/GenericList';
@@ -51,7 +53,9 @@ class AdminListUsers extends Component {
     return (
       <>
         <h1>Manager users</h1>
-        <p>+ Add new user</p>
+        <p>
+          <Link to="/admin/add-user">+ Add new user</Link>
+        </p>
         <GenericList
           content="users"
           users={this.state.users}

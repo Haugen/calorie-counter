@@ -8,7 +8,7 @@ const GenericItem = props => {
     const editUrl = '/user-settings/' + props.userId;
     return (
       <div>
-        E-mail: {props.email}, Calories: {props.calories}
+        E-mail: {props.email}, Calories: {props.calories}, Role: {props.role}
         <Link className="btn btn-secondary btn-sm" to={editUrl}>
           Edit
         </Link>
