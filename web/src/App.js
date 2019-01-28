@@ -103,12 +103,6 @@ class App extends Component {
     return stateToken !== null && storageToken === stateToken;
   };
 
-  handleUpdateUserSettings = settings => {
-    this.setState({
-      userSettings: settings
-    });
-  };
-
   render() {
     let pageContent;
 
@@ -152,7 +146,6 @@ class App extends Component {
               token={this.state.token}
               userId={this.state.userId}
               setMessages={this.setMessages}
-              updateUserSettings={this.handleUpdateUserSettings}
               path="/user-settings/:id"
             />
             <AdminListUsersPage

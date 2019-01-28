@@ -4,9 +4,11 @@ import cFetcher from '../util/fetch';
 
 class UserSettings extends Component {
   state = {
+    account: '',
     formData: {
       id: '',
       email: '',
+      password: '',
       calories: ''
     },
     loading: true
@@ -25,9 +27,11 @@ class UserSettings extends Component {
     }
 
     this.setState({
+      account: result.data.email,
       formData: {
         id: result.data.userId,
         email: result.data.email,
+        password: '',
         calories: result.data.calories
       },
       loading: false
@@ -47,7 +51,9 @@ class UserSettings extends Component {
     event.preventDefault();
 
     const body = {
-      calories: formData.calories
+      email: formData.email,
+      calories: formData.calories,
+      password: formData.password
     };
 
     const result = await cFetcher(
@@ -60,10 +66,6 @@ class UserSettings extends Component {
     if (result.hasError) {
       return this.props.setMessages(result.errorMessages);
     }
-
-    this.props.updateUserSettings({
-      dailyCalories: result.data.calories
-    });
 
     return this.props.setMessages({
       type: 'success',
@@ -78,9 +80,19 @@ class UserSettings extends Component {
         {!this.state.loading ? (
           <>
             <strong>Account: </strong>
-            {this.state.formData.email}
+            {this.state.account}
             <hr />
             <form onSubmit={e => this.handleFormPost(e, this.state.formData)}>
+              <div className="form-group">
+                <label htmlFor="email">E-mail</label>
+                <input
+                  onChange={e => this.handleInputChange(e, 'email')}
+                  value={this.state.formData.email}
+                  type="email"
+                  className="form-control"
+                  id="email"
+                />
+              </div>
               <div className="form-group">
                 <label htmlFor="calories">Number of daily calories</label>
                 <input
@@ -90,6 +102,17 @@ class UserSettings extends Component {
                   className="form-control"
                   id="calories"
                 />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">New password</label>
+                <input
+                  onChange={e => this.handleInputChange(e, 'password')}
+                  value={this.state.formData.password}
+                  type="password"
+                  className="form-control"
+                  id="password"
+                />
+                <small>Leave blank if you don't want to change password</small>
               </div>
               <button type="submit" className="btn btn-primary">
                 Update settings

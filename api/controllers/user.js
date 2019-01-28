@@ -124,6 +124,7 @@ exports.postLogin = async (req, res, next) => {
     const token = jwt.sign(
       {
         role: user.role,
+        email: user.email,
         userId: user._id.toString()
       },
       process.env.JWT_TOKEN_SECRET,
@@ -171,6 +172,8 @@ exports.putEdit = async (req, res, next) => {
   }
 
   const userId = req.params.id;
+  const email = req.body.email;
+  const password = req.body.password;
   const calories = req.body.calories;
 
   try {
@@ -189,6 +192,13 @@ exports.putEdit = async (req, res, next) => {
     }
 
     user.dailyCalories = calories;
+    user.email = email;
+
+    if (password.length > 0) {
+      const hashedPassword = await bcrypt.hash(password, 12);
+      user.password = hashedPassword;
+    }
+
     await user.save();
 
     res.status(200).json({
