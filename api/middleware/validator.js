@@ -40,8 +40,10 @@ validators.editUser = [
     .withMessage('Please enter a valid e-mail address')
     .custom((value, { req }) => {
       return User.findOne({ email: value }).then(userDoc => {
-        if (userDoc && req.userEmail !== value) {
-          return Promise.reject('E-mail address already exist.');
+        if (userDoc) {
+          if (req.params.id !== userDoc._id.toString()) {
+            return Promise.reject('E-mail address already exist.');
+          }
         }
       });
     })
