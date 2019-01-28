@@ -34,11 +34,6 @@ const Toolbar = props => {
             </Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/add-meal">
-              + Add meal
-            </Link>
-          </li>
-          <li className="nav-item">
             <Link className="nav-link" to={userSettingsUrl}>
               Settings
             </Link>

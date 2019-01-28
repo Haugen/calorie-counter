@@ -6,7 +6,8 @@ import GenericList from '../../components/GenericList';
 
 class AdminListMeals extends Component {
   state = {
-    meals: []
+    meals: [],
+    loading: true
   };
 
   async componentDidMount() {
@@ -22,7 +23,8 @@ class AdminListMeals extends Component {
     }
 
     this.setState({
-      meals: result.data.meals
+      meals: result.data.meals,
+      loading: false
     });
   }
 
@@ -48,15 +50,24 @@ class AdminListMeals extends Component {
   };
 
   render() {
-    return (
-      <>
-        <h1>Manager meals</h1>
-        <p>+ Add new meal</p>
+    let content;
+
+    if (this.state.loading) {
+      content = 'Loading...';
+    } else {
+      content = (
         <GenericList
           content="meals"
           meals={this.state.meals}
           onDelete={this.handleDelete}
         />
+      );
+    }
+    return (
+      <>
+        <h1>Manage meals</h1>
+        <p>+ Add new meal</p>
+        {content}
       </>
     );
   }

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { Link } from '@reach/router';
+
 import Meal from '../components/Meal';
 import MealFilters from '../components/MealFilters';
 import { convertDate, timeNumber } from '../util/helpers';
@@ -131,7 +133,9 @@ class ListMeals extends Component {
   render() {
     let content;
 
-    if (!this.state.loading && this.state.meals.length > 0) {
+    if (this.state.loading) {
+      content = 'Loading...';
+    } else if (!this.state.loading && this.state.meals.length > 0) {
       content = [];
       this.state.meals.forEach(meal => {
         content.push(
@@ -153,6 +157,9 @@ class ListMeals extends Component {
     return (
       <>
         <h1>My meals</h1>
+        <p>
+          <Link to="/add-meal">+ Add new meal</Link>
+        </p>
         <MealFilters
           filters={this.state.filters}
           onFilterChange={this.handleFilterChange}

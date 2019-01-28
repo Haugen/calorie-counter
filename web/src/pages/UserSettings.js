@@ -74,52 +74,59 @@ class UserSettings extends Component {
   };
 
   render() {
+    let content;
+
+    if (this.state.loading) {
+      content = 'Loading';
+    } else {
+      content = (
+        <>
+          <strong>Account: </strong>
+          {this.state.account}
+          <hr />
+          <form onSubmit={e => this.handleFormPost(e, this.state.formData)}>
+            <div className="form-group">
+              <label htmlFor="email">E-mail</label>
+              <input
+                onChange={e => this.handleInputChange(e, 'email')}
+                value={this.state.formData.email}
+                type="email"
+                className="form-control"
+                id="email"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="calories">Number of daily calories</label>
+              <input
+                onChange={e => this.handleInputChange(e, 'calories')}
+                value={this.state.formData.calories}
+                type="number"
+                className="form-control"
+                id="calories"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">New password</label>
+              <input
+                onChange={e => this.handleInputChange(e, 'password')}
+                value={this.state.formData.password}
+                type="password"
+                className="form-control"
+                id="password"
+              />
+              <small>Leave blank if you don't want to change password</small>
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Update settings
+            </button>
+          </form>
+        </>
+      );
+    }
     return (
       <>
         <h1>User settings</h1>
-        {!this.state.loading ? (
-          <>
-            <strong>Account: </strong>
-            {this.state.account}
-            <hr />
-            <form onSubmit={e => this.handleFormPost(e, this.state.formData)}>
-              <div className="form-group">
-                <label htmlFor="email">E-mail</label>
-                <input
-                  onChange={e => this.handleInputChange(e, 'email')}
-                  value={this.state.formData.email}
-                  type="email"
-                  className="form-control"
-                  id="email"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="calories">Number of daily calories</label>
-                <input
-                  onChange={e => this.handleInputChange(e, 'calories')}
-                  value={this.state.formData.calories}
-                  type="number"
-                  className="form-control"
-                  id="calories"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">New password</label>
-                <input
-                  onChange={e => this.handleInputChange(e, 'password')}
-                  value={this.state.formData.password}
-                  type="password"
-                  className="form-control"
-                  id="password"
-                />
-                <small>Leave blank if you don't want to change password</small>
-              </div>
-              <button type="submit" className="btn btn-primary">
-                Update settings
-              </button>
-            </form>
-          </>
-        ) : null}
+        {content}
       </>
     );
   }

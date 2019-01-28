@@ -8,7 +8,8 @@ import GenericList from '../../components/GenericList';
 
 class AdminListUsers extends Component {
   state = {
-    users: []
+    users: [],
+    loading: true
   };
 
   async componentDidMount() {
@@ -24,7 +25,8 @@ class AdminListUsers extends Component {
     }
 
     this.setState({
-      users: result.data.users
+      users: result.data.users,
+      loading: false
     });
   }
 
@@ -50,17 +52,26 @@ class AdminListUsers extends Component {
   };
 
   render() {
-    return (
-      <>
-        <h1>Manager users</h1>
-        <p>
-          <Link to="/admin/add-user">+ Add new user</Link>
-        </p>
+    let content;
+
+    if (this.state.loading) {
+      content = 'Loading...';
+    } else {
+      content = (
         <GenericList
           content="users"
           users={this.state.users}
           onDelete={this.handleDelete}
         />
+      );
+    }
+    return (
+      <>
+        <h1>Manage users</h1>
+        <p>
+          <Link to="/admin/add-user">+ Add new user</Link>
+        </p>
+        {content}
       </>
     );
   }
