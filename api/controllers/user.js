@@ -191,6 +191,10 @@ exports.putEdit = async (req, res, next) => {
       cError('Not authenticated', 401);
     }
 
+    if (req.userRole === 'manager' && user.role === 'admin') {
+      cError('You are not allowed to update admins.', 401);
+    }
+
     user.dailyCalories = calories;
     user.email = email;
 
