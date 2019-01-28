@@ -14,6 +14,7 @@ const GenericList = props => {
           email={user.email}
           calories={user.dailyCalories}
           userId={user._id}
+          onDelete={props.onDelete}
         />
       );
     });

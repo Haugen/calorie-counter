@@ -3,6 +3,7 @@ const { validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const Meal = require('../models/meal');
 const { cError } = require('../util/helpers');
 
 /**
@@ -150,10 +151,34 @@ exports.postLogin = async (req, res, next) => {
  *
  * Permissions: admin
  */
-exports.deleteUser = (req, res) => {
-  res.json({
-    message: 'DELETE Deletes user.'
-  });
+exports.deleteUser = async (req, res, next) => {
+  const userId = req.params.id;
+
+  try {
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      cError('Meal not found', 404);
+    }
+
+    if (user.role === 'admin') {
+      cError('You are not allowed to remove admin users.', 401);
+    }
+
+    await Meal.deleteMany({ user: userId });
+
+    const deletedUser = await User.deleteOne({ _id: userId });
+
+    res.status(200).json({
+      message: 'User deleted',
+      data: {
+        deletedUser: deletedUser,
+        deleteUserId: userId
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -192,7 +217,7 @@ exports.putEdit = async (req, res, next) => {
     }
 
     if (req.userRole === 'manager' && user.role === 'admin') {
-      cError('You are not allowed to update admins.', 401);
+      cError('You are not allowed to update admin users.', 401);
     }
 
     user.dailyCalories = calories;

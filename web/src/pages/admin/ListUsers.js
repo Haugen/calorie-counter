@@ -26,12 +26,37 @@ class AdminListUsers extends Component {
     });
   }
 
+  handleDelete = async userId => {
+    const result = await cFetcher(
+      '/user/' + userId,
+      'DELETE',
+      null,
+      this.props.token
+    );
+
+    if (result.hasError) {
+      return this.props.setMessages(result.errorMessages);
+    }
+
+    const newUsers = this.state.users.filter(user => {
+      return user._id !== userId;
+    });
+
+    this.setState({
+      users: newUsers
+    });
+  };
+
   render() {
     return (
       <>
         <h1>Manager users</h1>
         <p>+ Add new user</p>
-        <GenericList content="users" users={this.state.users} />
+        <GenericList
+          content="users"
+          users={this.state.users}
+          onDelete={this.handleDelete}
+        />
       </>
     );
   }

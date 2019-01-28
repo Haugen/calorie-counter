@@ -12,6 +12,12 @@ const GenericItem = props => {
         <Link className="btn btn-secondary btn-sm" to={editUrl}>
           Edit
         </Link>
+        <button
+          className="btn btn-danger btn-sm"
+          onClick={() => props.onDelete(props.userId)}
+        >
+          Delete
+        </button>
       </div>
     );
   }
