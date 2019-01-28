@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { Link } from '@reach/router';
+
 import protectedComponent from '../../components/hoc/protectedComponent';
 import cFetcher from '../../util/fetch';
 import GenericList from '../../components/GenericList';
@@ -66,7 +68,9 @@ class AdminListMeals extends Component {
     return (
       <>
         <h1>Manage meals</h1>
-        <p>+ Add new meal</p>
+        <p>
+          <Link to="/add-meal">+ Add new meal</Link>
+        </p>
         {content}
       </>
     );

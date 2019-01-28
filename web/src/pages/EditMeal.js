@@ -11,15 +11,39 @@ class EditMeals extends Component {
   state = {
     formData: {
       id: '',
+      userEmail: null,
       text: '',
       calories: '',
       date: new Date(),
       time: ''
     },
+    users: [],
     loading: true
   };
 
   async componentDidMount() {
+    if (this.props.userRole === 'admin') {
+      const adminResult = await cFetcher(
+        '/admin/users',
+        'GET',
+        null,
+        this.props.token
+      );
+
+      if (adminResult.data && adminResult.data.admin) {
+        if (adminResult.hasError) {
+          return this.props.setMessages(adminResult.errorMessages);
+        }
+        let userEmails = [];
+        adminResult.data.users.forEach(user => {
+          userEmails.push(user.email);
+        });
+        this.setState({
+          users: userEmails
+        });
+      }
+    }
+
     if (this.props.editMode) {
       const result = await cFetcher(
         '/meals/' + this.props.id,
@@ -36,6 +60,7 @@ class EditMeals extends Component {
         formData: {
           ...this.state.formData,
           id: result.data.meal._id,
+          userEmail: result.data.meal.user.email,
           text: result.data.meal.text,
           calories: result.data.meal.calories,
           date: convertDate(result.data.meal.date, 'utl')
@@ -68,6 +93,7 @@ class EditMeals extends Component {
       date: convertDate(formData.date, 'ltu')
     };
     body._id = this.props.editMode ? this.state.formData.id : null;
+    body.userEmail = this.state.formData.userEmail;
     let url = '/meals';
     url += this.props.editMode ? '/' + this.state.formData.id : '';
 
@@ -86,6 +112,7 @@ class EditMeals extends Component {
       this.setState({
         formData: {
           id: '',
+          userEmail: null,
           text: '',
           calories: '',
           date: new Date(),
@@ -101,6 +128,36 @@ class EditMeals extends Component {
   };
 
   render() {
+    let adminField = null;
+
+    if (this.state.users.length > 0 && !this.state.loading) {
+      console.log(this.state.formData.userEmail);
+      let options = [<option key="self">Myself</option>];
+      this.state.users.forEach(email => {
+        let option = <option key={email}>{email}</option>;
+        if (email === this.state.formData.userEmail) {
+          option = (
+            <option selected key={email}>
+              {email}
+            </option>
+          );
+        }
+        options.push(option);
+      });
+      adminField = (
+        <div className="form-group">
+          <label htmlFor="userEmail">User</label>
+          <select
+            onChange={e => this.handleInputChange(e, 'userEmail')}
+            className="custom-select"
+          >
+            {options}
+          </select>
+          <small>Select an e-mail to assign this meal to another user.</small>
+        </div>
+      );
+    }
+
     return (
       <>
         <h1>{this.props.editMode ? 'Edit meal' : 'Add new meal'}</h1>
@@ -121,6 +178,9 @@ class EditMeals extends Component {
                   />
                 </div>
               </div>
+
+              {adminField}
+
               <div className="form-group">
                 <label htmlFor="text">Text</label>
                 <textarea

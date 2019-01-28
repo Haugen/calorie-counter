@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator/check');
 const mongoose = require('mongoose');
 
 const Meal = require('../models/meal');
+const User = require('../models/user');
 const { cError, timeNumber } = require('../util/helpers');
 
 /**
@@ -70,7 +71,7 @@ exports.getMeal = async (req, res, next) => {
   const mealId = req.params.id;
 
   try {
-    const meal = await Meal.findOne({ _id: mealId });
+    const meal = await Meal.findOne({ _id: mealId }).populate('user');
 
     if (!meal) {
       cError('Meal not found', 404);
@@ -112,11 +113,24 @@ exports.postMeal = async (req, res, next) => {
     text: req.body.text,
     calories: req.body.calories,
     date: req.body.date,
-    time: time,
-    user: req.userId
+    time: time
   };
 
   try {
+    if (req.userRole === 'admin') {
+      const userEmail = req.body.userEmail;
+      if (userEmail && userEmail !== 'Myself') {
+        const user = await User.findOne({ email: userEmail });
+        if (!user) {
+          cError("User not found. Can't assign meal.", 404);
+        } else {
+          mealData.user = user._id;
+        }
+      }
+    }
+
+    if (!mealData.user) mealData.user = req.userId;
+
     const newMeal = await Meal.create(mealData);
 
     res.json({
@@ -160,6 +174,20 @@ exports.putMeal = async (req, res, next) => {
 
     if (meal.user.toString() !== req.userId && req.userRole !== 'admin') {
       cError('Not authenticated', 401);
+    }
+
+    if (req.userRole === 'admin') {
+      const userEmail = req.body.userEmail;
+      if (userEmail && userEmail !== 'Myself') {
+        const user = await User.findOne({ email: userEmail });
+        if (!user) {
+          cError("User not found. Can't assign meal.", 404);
+        } else {
+          meal.user = user._id;
+        }
+      } else {
+        meal.user = req.userId;
+      }
     }
 
     meal.text = text;

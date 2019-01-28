@@ -8,7 +8,7 @@ validators.signup = [
   check('email')
     .isEmail()
     .withMessage('Please enter a valid e-mail address')
-    .custom((value, { req }) => {
+    .custom(value => {
       return User.findOne({ email: value }).then(userDoc => {
         if (userDoc) {
           return Promise.reject('E-mail address already exist.');

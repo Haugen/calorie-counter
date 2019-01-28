@@ -10,11 +10,13 @@ const Meal = require('../models/meal');
 exports.getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
+    const admin = req.userRole === 'admin';
 
     res.json({
       message: 'ADMIN all users.',
       data: {
-        users: users
+        users: users,
+        admin: admin
       }
     });
   } catch (error) {

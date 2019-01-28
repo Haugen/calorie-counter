@@ -131,12 +131,14 @@ class App extends Component {
               setMessages={this.setMessages}
               path="/add-meal"
               editMode={false}
+              userRole={this.state.userRole}
             />
             <EditMealPage
               token={this.state.token}
               setMessages={this.setMessages}
               path="/edit-meal/:id"
               editMode={true}
+              userRole={this.state.userRole}
             />
             <ListMealsPage
               token={this.state.token}
