@@ -16,15 +16,23 @@ class UserSettings extends Component {
   };
 
   async componentDidMount() {
+    this.fetchUserData(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.fetchUserData(nextProps);
+  }
+
+  fetchUserData = async currentProps => {
     const result = await cFetcher(
-      '/user/' + this.props.id,
+      '/user/' + currentProps.id,
       'GET',
       null,
-      this.props.token
+      currentProps.token
     );
 
     if (result.hasError) {
-      return this.props.setMessages(result.errorMessages);
+      return currentProps.setMessages(result.errorMessages);
     }
 
     this.setState({
@@ -37,7 +45,7 @@ class UserSettings extends Component {
       },
       loading: false
     });
-  }
+  };
 
   handleInputChange = (event, field) => {
     this.setState({
