@@ -14,20 +14,17 @@ const Meal = props => {
           {props.text} {props.overDaily === true ? 'RED' : 'GREEN'}
         </p>
         <div>
-          <strong>Calories: </strong>
-          {props.calories}
-        </div>
-        <div>
-          <strong>Date: </strong>
+          <span className="badge badge-light">Date</span>{' '}
           {dateForDisplay(props.date)}
+          <br />
+          <span className="badge badge-light">Calories</span> {props.calories}
         </div>
-      </div>
-      <div className="card-footer text-muted">
-        <Link className="btn btn-secondary btn-sm mr-2" to={editUrl}>
+        <hr />
+        <Link className="btn btn-outline-secondary btn-sm mr-2" to={editUrl}>
           Edit
         </Link>
         <button
-          className="btn btn-danger btn-sm"
+          className="btn btn-outline-danger btn-sm"
           onClick={() => props.onDelete(props.id)}
         >
           Delete

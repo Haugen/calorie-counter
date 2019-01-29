@@ -11,7 +11,7 @@ class EditMeals extends Component {
   state = {
     formData: {
       id: '',
-      userEmail: null,
+      userEmail: '',
       text: '',
       calories: '',
       date: new Date(),
@@ -131,24 +131,19 @@ class EditMeals extends Component {
     let adminField = null;
 
     if (this.state.users.length > 0 && !this.state.loading) {
-      console.log(this.state.formData.userEmail);
       let options = [<option key="self">Myself</option>];
+
       this.state.users.forEach(email => {
         let option = <option key={email}>{email}</option>;
-        if (email === this.state.formData.userEmail) {
-          option = (
-            <option selected key={email}>
-              {email}
-            </option>
-          );
-        }
         options.push(option);
       });
+
       adminField = (
         <div className="form-group">
           <label htmlFor="userEmail">User</label>
           <select
             onChange={e => this.handleInputChange(e, 'userEmail')}
+            value={this.state.formData.userEmail}
             className="custom-select"
           >
             {options}

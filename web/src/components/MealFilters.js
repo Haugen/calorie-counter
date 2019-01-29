@@ -59,7 +59,10 @@ const MealFilters = props => {
           isClearable={true}
         />
       </div>
-      <button className="btn btn-primary" onClick={props.onHandleFiltering}>
+      <button
+        className="btn btn-primary my-4"
+        onClick={props.onHandleFiltering}
+      >
         Filter meals
       </button>
     </div>

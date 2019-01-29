@@ -45,10 +45,7 @@ class Signup extends Component {
       return <Redirect noThrow to="/" />;
     } else {
       return (
-        <>
-          <p>
-            Already have an account? <Link to="/">Go login!</Link>
-          </p>
+        <div className="signup-login">
           <h1>Sign up</h1>
           <form onSubmit={e => this.handleFormPost(e, this.state.formData)}>
             <div className="form-group">
@@ -71,11 +68,14 @@ class Signup extends Component {
                 id="password"
               />
             </div>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary mb-2">
               Sign up!
             </button>
           </form>
-        </>
+          <p>
+            Already have an account? <Link to="/">Go login!</Link>
+          </p>
+        </div>
       );
     }
   }

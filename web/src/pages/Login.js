@@ -41,10 +41,7 @@ class Login extends Component {
 
   render() {
     return (
-      <>
-        <p>
-          Don't yet have an account? <Link to="signup">Sign up now!</Link>
-        </p>
+      <div className="signup-login">
         <h1>Login</h1>
         <form onSubmit={e => this.handleFormPost(e, this.state.formData)}>
           <div className="form-group">
@@ -67,11 +64,14 @@ class Login extends Component {
               id="password"
             />
           </div>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary mb-2">
             Login!
           </button>
         </form>
-      </>
+        <p>
+          Don't yet have an account? <Link to="signup">Sign up now!</Link>
+        </p>
+      </div>
     );
   }
 }

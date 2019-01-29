@@ -158,7 +158,9 @@ class ListMeals extends Component {
       <>
         <h1>My meals</h1>
         <p>
-          <Link to="/add-meal">+ Add new meal</Link>
+          <strong>
+            <Link to="/add-meal">+ Add new meal</Link>
+          </strong>
         </p>
         <MealFilters
           filters={this.state.filters}

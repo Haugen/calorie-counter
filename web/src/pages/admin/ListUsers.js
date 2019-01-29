@@ -69,7 +69,9 @@ class AdminListUsers extends Component {
       <>
         <h1>Manage users</h1>
         <p>
-          <Link to="/admin/add-user">+ Add new user</Link>
+          <strong>
+            <Link to="/admin/add-user">+ Add new user</Link>
+          </strong>
         </p>
         {content}
       </>

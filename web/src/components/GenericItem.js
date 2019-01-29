@@ -12,13 +12,13 @@ const GenericItem = props => {
         <td>{props.role}</td>
         <td>{props.calories}</td>
         <td>
-          <Link className="btn btn-secondary btn-sm" to={editUrl}>
+          <Link className="btn btn-outline-secondary btn-sm" to={editUrl}>
             Edit
           </Link>
         </td>
         <td>
           <button
-            className="btn btn-danger btn-sm"
+            className="btn btn-outline-danger btn-sm"
             onClick={() => props.onDelete(props.userId)}
           >
             Delete
@@ -40,13 +40,13 @@ const GenericItem = props => {
         <td>{props.calories}</td>
         <td>{dateForDisplay(props.date)}</td>
         <td>
-          <Link className="btn btn-secondary btn-sm" to={editUrl}>
+          <Link className="btn btn-outline-secondary btn-sm" to={editUrl}>
             Edit
           </Link>
         </td>
         <td>
           <button
-            className="btn btn-danger btn-sm"
+            className="btn btn-outline-danger btn-sm"
             onClick={() => props.onDelete(props.mealId)}
           >
             Delete

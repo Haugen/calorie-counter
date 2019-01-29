@@ -69,7 +69,9 @@ class AdminListMeals extends Component {
       <>
         <h1>Manage meals</h1>
         <p>
-          <Link to="/add-meal">+ Add new meal</Link>
+          <strong>
+            <Link to="/add-meal">+ Add new meal</Link>
+          </strong>
         </p>
         {content}
       </>

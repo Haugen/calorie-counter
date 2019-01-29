@@ -121,7 +121,7 @@ class App extends Component {
             <LoginPage
               setMessages={this.setMessages}
               onSuccess={this.handleSuccessfulLogin}
-              path="/"
+              path="*"
             />
           </Router>
         );
@@ -141,11 +141,6 @@ class App extends Component {
               path="/edit-meal/:id"
               editMode={true}
               userRole={this.state.userRole}
-            />
-            <ListMealsPage
-              token={this.state.token}
-              setMessages={this.setMessages}
-              path="/"
             />
             <UserSettingsPage
               token={this.state.token}
@@ -168,6 +163,11 @@ class App extends Component {
               path="admin/add-user"
               token={this.state.token}
             />
+            <ListMealsPage
+              token={this.state.token}
+              setMessages={this.setMessages}
+              path="*"
+            />
           </Router>
         );
       }
@@ -188,11 +188,11 @@ class App extends Component {
           <Modal messages={this.state.messages} onClose={this.clearMessages} />
         ) : null}
 
-        <div className="container">
+        <div className="container page-content">
           <div className="col-12 col-xl-10 offset-xl-1">{pageContent}</div>
         </div>
 
-        <footer class="small">
+        <footer className="small footer">
           Calorie Counter, made with love and hunger!
         </footer>
       </>
