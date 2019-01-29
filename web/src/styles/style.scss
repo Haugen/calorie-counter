@@ -1,10 +1,5 @@
 @import './custom-bootstrap.scss';
 
-.footer {
-  padding: 50px 0;
-  text-align: center;
-}
-
 .page-content {
   min-height: 400px;
 }
@@ -21,4 +16,9 @@
   width: 500px;
   max-width: 100%;
   margin: 100px auto 0;
+}
+
+.footer {
+  padding: 50px 0;
+  text-align: center;
 }

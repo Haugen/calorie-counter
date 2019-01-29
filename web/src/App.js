@@ -184,11 +184,14 @@ class App extends Component {
           logout={this.logoutHandler}
         />
 
-        {this.state.messages.length > 0 ? (
-          <Modal messages={this.state.messages} onClose={this.clearMessages} />
-        ) : null}
-
         <div className="container page-content">
+          {this.state.messages.length > 0 ? (
+            <Modal
+              messages={this.state.messages}
+              onClose={this.clearMessages}
+            />
+          ) : null}
+
           <div className="col-12 col-xl-10 offset-xl-1">{pageContent}</div>
         </div>
 
