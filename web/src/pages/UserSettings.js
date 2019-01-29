@@ -8,6 +8,7 @@ class UserSettings extends Component {
     formData: {
       id: '',
       email: '',
+      role: '',
       password: '',
       confirmPassword: '',
       calories: ''
@@ -40,6 +41,7 @@ class UserSettings extends Component {
       formData: {
         id: result.data.userId,
         email: result.data.email,
+        role: result.data.role,
         password: '',
         calories: result.data.calories
       },
@@ -61,6 +63,7 @@ class UserSettings extends Component {
 
     const body = {
       email: formData.email,
+      role: formData.role,
       calories: formData.calories,
       password: formData.password,
       confirmPassword: formData.confirmPassword
@@ -85,6 +88,29 @@ class UserSettings extends Component {
 
   render() {
     let content;
+    let roleSettings = null;
+
+    if (this.props.userRole === 'admin') {
+      let options = [
+        <option key="user">user</option>,
+        <option key="manager">manager</option>,
+        <option key="admin">admin</option>
+      ];
+
+      roleSettings = (
+        <div className="form-group">
+          <label htmlFor="userRole">Role</label>
+          <select
+            onChange={e => this.handleInputChange(e, 'role')}
+            value={this.state.formData.role}
+            className="custom-select"
+          >
+            {options}
+          </select>
+          <small>As an admin, you can change the role of this user.</small>
+        </div>
+      );
+    }
 
     if (this.state.loading) {
       content = 'Loading';
@@ -105,6 +131,9 @@ class UserSettings extends Component {
                 id="email"
               />
             </div>
+
+            {roleSettings}
+
             <div className="form-group">
               <label htmlFor="calories">Number of daily calories</label>
               <input

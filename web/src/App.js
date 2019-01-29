@@ -131,21 +131,22 @@ class App extends Component {
             <EditMealPage
               token={this.state.token}
               setMessages={this.setMessages}
-              path="/add-meal"
               editMode={false}
               userRole={this.state.userRole}
+              path="/add-meal"
             />
             <EditMealPage
               token={this.state.token}
               setMessages={this.setMessages}
-              path="/edit-meal/:id"
               editMode={true}
               userRole={this.state.userRole}
+              path="/edit-meal/:id"
             />
             <UserSettingsPage
               token={this.state.token}
-              userId={this.state.userId}
               setMessages={this.setMessages}
+              userId={this.state.userId}
+              userRole={this.state.userRole}
               path="/user-settings/:id"
             />
             <AdminListUsersPage
@@ -159,9 +160,9 @@ class App extends Component {
               path="admin/meals"
             />
             <AdminAddUserPage
+              token={this.state.token}
               setMessages={this.setMessages}
               path="admin/add-user"
-              token={this.state.token}
             />
             <ListMealsPage
               token={this.state.token}

@@ -198,6 +198,7 @@ exports.putEdit = async (req, res, next) => {
 
   const userId = req.params.id;
   const email = req.body.email;
+  const role = req.body.role;
   const password = req.body.password;
   const calories = req.body.calories;
 
@@ -218,6 +219,10 @@ exports.putEdit = async (req, res, next) => {
 
     if (req.userRole === 'manager' && user.role === 'admin') {
       cError('You are not allowed to update admin users.', 401);
+    }
+
+    if (req.userRole === 'admin') {
+      user.role = role;
     }
 
     user.dailyCalories = calories;
