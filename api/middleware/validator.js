@@ -20,6 +20,13 @@ validators.signup = [
     .trim()
     .isLength({ min: 5 })
     .withMessage('Please enter a password longer than 5 characters.')
+    .custom((value, { req }) => {
+      if (value !== req.body.confirmPassword) {
+        throw new Error("Passwords don't match. Please try again.");
+      } else {
+        return true;
+      }
+    })
 ];
 
 validators.editMeal = [
@@ -56,6 +63,13 @@ validators.editUser = [
     .isLength({ min: 5 })
     .withMessage('Please enter a password longer than 5 characters.')
     .optional({ checkFalsy: true })
+    .custom((value, { req }) => {
+      if (value !== req.body.confirmPassword) {
+        throw new Error("Passwords don't match. Please try again.");
+      } else {
+        return true;
+      }
+    })
 ];
 
 module.exports = validators;

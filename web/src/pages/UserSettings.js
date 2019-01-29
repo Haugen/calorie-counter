@@ -9,6 +9,7 @@ class UserSettings extends Component {
       id: '',
       email: '',
       password: '',
+      confirmPassword: '',
       calories: ''
     },
     loading: true
@@ -53,7 +54,8 @@ class UserSettings extends Component {
     const body = {
       email: formData.email,
       calories: formData.calories,
-      password: formData.password
+      password: formData.password,
+      confirmPassword: formData.confirmPassword
     };
 
     const result = await cFetcher(
@@ -115,6 +117,16 @@ class UserSettings extends Component {
                 id="password"
               />
               <small>Leave blank if you don't want to change password</small>
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirm-password">Confirm new password</label>
+              <input
+                onChange={e => this.handleInputChange(e, 'confirmPassword')}
+                value={this.state.formData.confirmPassword}
+                type="password"
+                className="form-control"
+                id="confirm-password"
+              />
             </div>
             <button type="submit" className="btn btn-primary">
               Update settings
