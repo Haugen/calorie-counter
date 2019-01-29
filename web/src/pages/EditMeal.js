@@ -112,7 +112,7 @@ class EditMeals extends Component {
       this.setState({
         formData: {
           id: '',
-          userEmail: null,
+          userEmail: '',
           text: '',
           calories: '',
           date: new Date(),

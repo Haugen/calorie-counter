@@ -8,7 +8,7 @@ const MealFilters = props => {
   return (
     <div className="meal-filters row">
       <div className="col-12 col-md-6 col-lg-3">
-        From date{' '}
+        <label>From date:</label>{' '}
         <DatePicker
           selected={props.filters.fromDate}
           onChange={e => props.onFilterChange(e, 'fromDate')}
@@ -20,7 +20,7 @@ const MealFilters = props => {
         />
       </div>
       <div className="col-12 col-md-6 col-lg-3">
-        To date{' '}
+        <label>To date:</label>{' '}
         <DatePicker
           selected={props.filters.toDate}
           onChange={e => props.onFilterChange(e, 'toDate')}
@@ -32,7 +32,7 @@ const MealFilters = props => {
         />
       </div>
       <div className="col-12 col-md-6 col-lg-3">
-        From time{' '}
+        <label>From time:</label>{' '}
         <DatePicker
           selected={props.filters.fromTime}
           onChange={e => props.onFilterChange(e, 'fromTime')}
@@ -46,7 +46,7 @@ const MealFilters = props => {
         />
       </div>
       <div className="col-12 col-md-6 col-lg-3">
-        To time{' '}
+        <label>To time:</label>{' '}
         <DatePicker
           selected={props.filters.toTime}
           onChange={e => props.onFilterChange(e, 'toTime')}
@@ -60,7 +60,7 @@ const MealFilters = props => {
         />
       </div>
       <button
-        className="btn btn-primary my-4"
+        className="btn btn-primary mt-2"
         onClick={props.onHandleFiltering}
       >
         Filter meals
