@@ -14,10 +14,12 @@ const { cError, timeNumber } = require('../util/helpers');
 exports.getMeals = async (req, res, next) => {
   const fromDate = req.query.fromDate || new Date('2019-01-01').getTime();
   let toDate = req.query.toDate || new Date().getTime();
-  const fromTime = timeNumber(req.query.fromTime) || 0;
-  const toTime = timeNumber(req.query.toTime) || 1440;
   const almostADay = 1000 * 60 * 60 * 24 - 1000;
   toDate = Number(toDate) + almostADay;
+
+  // Not using these since I'm currently doing time filtering on the front end.
+  // const fromTime = timeNumber(req.query.fromTime) || 0;
+  // const toTime = timeNumber(req.query.toTime) || 1440;
 
   try {
     const mealQuery = Meal.aggregate([
@@ -209,7 +211,7 @@ exports.putMeal = async (req, res, next) => {
 
 /**
  * DELETE /meals/:id
- * Returns the deleted meal? Or just a success message?
+ * Returns the deleted meal and mealId.
  *
  * Permissions: user, manager, admin.
  */

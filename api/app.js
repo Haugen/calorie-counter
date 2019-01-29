@@ -32,10 +32,10 @@ app.use('/admin', adminRoutes);
 app.use('/user', userRoutes);
 app.use(mealRoutes);
 
-// Initial catch all. Should be 404.
+// Catch all 404.
 app.use('*', (req, res, next) => {
-  res.json({
-    message: 'Hello world!'
+  res.status(404).json({
+    message: 'Nothing found here!'
   });
 });
 
