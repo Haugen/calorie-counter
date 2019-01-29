@@ -7,7 +7,8 @@ class AdminListUsers extends Component {
   state = {
     formData: {
       email: '',
-      password: ''
+      password: '',
+      confirmPassword: ''
     }
   };
 
@@ -25,7 +26,8 @@ class AdminListUsers extends Component {
 
     const body = JSON.stringify({
       email: formData.email,
-      password: formData.password
+      password: formData.password,
+      confirmPassword: formData.confirmPassword
     });
 
     const result = await cFetcher('/user/signup', 'POST', body);
@@ -63,6 +65,16 @@ class AdminListUsers extends Component {
               type="password"
               className="form-control"
               id="password"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="confirm-password">Confirm password</label>
+            <input
+              onChange={e => this.handleInputChange(e, 'confirmPassword')}
+              value={this.state.formData.confirmPassword}
+              type="password"
+              className="form-control"
+              id="confirm-password"
             />
           </div>
           <button type="submit" className="btn btn-primary">
