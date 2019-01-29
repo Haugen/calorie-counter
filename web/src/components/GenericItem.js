@@ -19,7 +19,16 @@ const GenericItem = props => {
         <td>
           <button
             className="btn btn-outline-danger btn-sm"
-            onClick={() => props.onDelete(props.userId)}
+            onClick={() => {
+              if (
+                window.confirm(
+                  `This will permanently delete user ${
+                    props.email
+                  } and all meals associated with the account. Are you sure you want this?`
+                )
+              )
+                props.onDelete(props.userId);
+            }}
           >
             Delete
           </button>
@@ -47,7 +56,14 @@ const GenericItem = props => {
         <td>
           <button
             className="btn btn-outline-danger btn-sm"
-            onClick={() => props.onDelete(props.mealId)}
+            onClick={() => {
+              if (
+                window.confirm(
+                  'Are you sure you want to permanently delete this meal?'
+                )
+              )
+                props.onDelete(props.mealId);
+            }}
           >
             Delete
           </button>

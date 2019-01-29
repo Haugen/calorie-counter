@@ -25,7 +25,14 @@ const Meal = props => {
         </Link>
         <button
           className="btn btn-outline-danger btn-sm"
-          onClick={() => props.onDelete(props.id)}
+          onClick={() => {
+            if (
+              window.confirm(
+                'Are you sure you want to permanently delete this meal?'
+              )
+            )
+              props.onDelete(props.id);
+          }}
         >
           Delete
         </button>
