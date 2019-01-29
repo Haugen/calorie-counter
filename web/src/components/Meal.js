@@ -7,12 +7,14 @@ import { dateForDisplay } from '../util/helpers';
 const Meal = props => {
   const editUrl = `/edit-meal/${props.id}`;
 
+  const mealStyle = {
+    borderColor: props.overDaily === true ? '#d34423' : '#259123'
+  };
+
   return (
-    <div className="col-12 col-md-8 offset-md-2 card mb-3">
+    <div style={mealStyle} className="col-12 col-md-8 offset-md-2 card mb-3">
       <div className="card-body">
-        <p className="card-text">
-          {props.text} {props.overDaily === true ? 'RED' : 'GREEN'}
-        </p>
+        <p className="card-text">{props.text}</p>
         <div>
           <span className="badge badge-light">Date</span>{' '}
           {dateForDisplay(props.date)}
