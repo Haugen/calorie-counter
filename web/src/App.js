@@ -13,6 +13,8 @@ import AdminListUsersPage from './pages/admin/ListUsers';
 import AdminListMealsPage from './pages/admin/ListMeals';
 import AdminAddUserPage from './pages/admin/AddUser';
 
+import './styles/style.scss';
+
 class App extends Component {
   state = {
     token: null,
@@ -187,8 +189,12 @@ class App extends Component {
         ) : null}
 
         <div className="container">
-          <div className="col-12">{pageContent}</div>
+          <div className="col-12 col-xl-10 offset-xl-1">{pageContent}</div>
         </div>
+
+        <footer class="small">
+          Calorie Counter, made with love and hunger!
+        </footer>
       </>
     );
   }

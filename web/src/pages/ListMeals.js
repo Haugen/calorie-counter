@@ -165,7 +165,7 @@ class ListMeals extends Component {
           onFilterChange={this.handleFilterChange}
           onHandleFiltering={this.handleFiltering}
         />
-        {content}
+        <div className="meal-list">{content}</div>
       </>
     );
   }

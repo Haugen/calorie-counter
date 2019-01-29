@@ -6,8 +6,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const MealFilters = props => {
   return (
-    <>
-      <div>
+    <div className="meal-filters row">
+      <div className="col-12 col-md-6 col-lg-3">
         From date{' '}
         <DatePicker
           selected={props.filters.fromDate}
@@ -19,7 +19,7 @@ const MealFilters = props => {
           isClearable={true}
         />
       </div>
-      <div>
+      <div className="col-12 col-md-6 col-lg-3">
         To date{' '}
         <DatePicker
           selected={props.filters.toDate}
@@ -31,7 +31,7 @@ const MealFilters = props => {
           isClearable={true}
         />
       </div>
-      <div>
+      <div className="col-12 col-md-6 col-lg-3">
         From time{' '}
         <DatePicker
           selected={props.filters.fromTime}
@@ -45,7 +45,7 @@ const MealFilters = props => {
           isClearable={true}
         />
       </div>
-      <div>
+      <div className="col-12 col-md-6 col-lg-3">
         To time{' '}
         <DatePicker
           selected={props.filters.toTime}
@@ -62,7 +62,7 @@ const MealFilters = props => {
       <button className="btn btn-primary" onClick={props.onHandleFiltering}>
         Filter meals
       </button>
-    </>
+    </div>
   );
 };
 

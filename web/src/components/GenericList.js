@@ -20,7 +20,22 @@ const GenericList = props => {
       );
     });
 
-    return content;
+    return (
+      <div className="table-responsive">
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">E-mail</th>
+              <th scope="col">Role</th>
+              <th scope="col">Daily Calories</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>{content}</tbody>
+        </table>
+      </div>
+    );
   }
 
   if (props.content === 'meals') {
@@ -39,7 +54,23 @@ const GenericList = props => {
       );
     });
 
-    return content;
+    return (
+      <div className="table-responsive">
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">User</th>
+              <th scope="col">Text</th>
+              <th scope="col">Calories</th>
+              <th scope="col">Date</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>{content}</tbody>
+        </table>
+      </div>
+    );
   }
 
   return null;

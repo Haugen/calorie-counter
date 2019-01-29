@@ -8,7 +8,7 @@ const Meal = props => {
   const editUrl = `/edit-meal/${props.id}`;
 
   return (
-    <div className="card mb-3">
+    <div className="col-12 col-md-8 offset-md-2 card mb-3">
       <div className="card-body">
         <p className="card-text">
           {props.text} {props.overDaily === true ? 'RED' : 'GREEN'}
