@@ -47,9 +47,9 @@ exports.getMeals = async (req, res, next) => {
           dayMeals: { $push: '$$ROOT' },
           dayTotalCalories: { $sum: '$calories' }
         }
-      }
+      },
+      { $sort: { _id: -1 } }
     ]);
-    mealQuery.sort({ date: 'desc' });
 
     const meals = await mealQuery;
 
