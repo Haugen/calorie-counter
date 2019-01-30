@@ -1,5 +1,8 @@
 // Base URL for backend API.
-module.exports.BASE_URL = 'http://localhost:3001';
+module.exports.BASE_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3001'
+    : 'LIVE BACKEND URL';
 
 // Convert date between local and UTC.
 module.exports.convertDate = (date, direction) => {
