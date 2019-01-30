@@ -40,6 +40,14 @@ class AdminListUsers extends Component {
       type: 'success',
       message: 'User successfully added.'
     });
+
+    this.setState({
+      formData: {
+        email: '',
+        password: '',
+        confirmPassword: ''
+      }
+    });
   };
 
   render() {
