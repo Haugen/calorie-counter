@@ -22,7 +22,7 @@ module.exports = (...allowed) => {
       const blacklistedToken = await Blacklist.findOne({ token: token });
 
       if (blacklistedToken) {
-        cError('Unvalid token.', 401);
+        cError('Invalid token.', 401);
       }
 
       decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET);

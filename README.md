@@ -23,3 +23,4 @@
 - Better protection of unauthorised parts of the UI.
 - Autocomplete field for admins when assigning meals to users.
 - Clearer indication when you are editing another account than your own.
+- Blacklist tokens on logout as well.
