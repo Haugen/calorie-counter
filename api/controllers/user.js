@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 const Meal = require('../models/meal');
+const Blacklist = require('../models/blacklist');
 const { cError } = require('../util/helpers');
 
 /**
@@ -132,6 +133,9 @@ exports.postLogin = async (req, res, next) => {
       { expiresIn: '1h' }
     );
 
+    user.activeToken = token;
+    await user.save();
+
     res.status(200).json({
       message: 'User successfully logged in.',
       data: {
@@ -158,7 +162,7 @@ exports.deleteUser = async (req, res, next) => {
     const user = await User.findOne({ _id: userId });
 
     if (!user) {
-      cError('Meal not found', 404);
+      cError('User not found', 404);
     }
 
     if (user.role === 'admin') {
@@ -168,6 +172,13 @@ exports.deleteUser = async (req, res, next) => {
     await Meal.deleteMany({ user: userId });
 
     const deletedUser = await User.deleteOne({ _id: userId });
+
+    if (user.activeToken) {
+      blacklistedToken = await Blacklist.create({
+        token: user.activeToken
+      });
+      blacklistedToken.save();
+    }
 
     res.status(200).json({
       message: 'User deleted',

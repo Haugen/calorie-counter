@@ -15,6 +15,9 @@ const UserSchema = new Schema({
     required: true,
     default: 'user'
   },
+  activeToken: {
+    type: String
+  },
   dailyCalories: {
     type: Number,
     required: true,

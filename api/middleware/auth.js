@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+const Blacklist = require('../models/blacklist');
 const { cError } = require('../util/helpers');
 
 module.exports = (...allowed) => {
@@ -9,8 +10,7 @@ module.exports = (...allowed) => {
   }
   const isAllowed = role => allowed.indexOf(role) > -1;
 
-  return (req, res, next) => {
-    // If there is no Authorization header.
+  return async (req, res, next) => {
     if (!req.get('Authorization')) {
       cError('Not authenticated.', 401);
     }
@@ -18,22 +18,27 @@ module.exports = (...allowed) => {
     const token = req.get('Authorization').split(' ')[1];
     let decodedToken;
 
-    // Try to decode the token.
     try {
+      const blacklistedToken = await Blacklist.findOne({ token: token });
+
+      if (blacklistedToken) {
+        cError('Unvalid token.', 401);
+      }
+
       decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
+
+      if (!decodedToken || !isAllowed(decodedToken.role)) {
+        cError('Not authenticated.', 401);
+      }
+
+      req.userId = decodedToken.userId;
+      req.userEmail = decodedToken.email;
+      req.userRole = decodedToken.role;
+      req.userToken = token;
+
+      next();
     } catch (error) {
-      throw error;
+      next(error);
     }
-
-    // Checking again for token, and lastly checking user role permissions.
-    if (!decodedToken || !isAllowed(decodedToken.role)) {
-      cError('Not authenticated.', 401);
-    }
-
-    req.userId = decodedToken.userId;
-    req.userEmail = decodedToken.email;
-    req.userRole = decodedToken.role;
-
-    next();
   };
 };

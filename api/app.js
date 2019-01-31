@@ -49,7 +49,7 @@ app.use('*', (err, req, res, next) => {
 mongoose
   .connect(
     MONGODB_URI,
-    { useNewUrlParser: true }
+    { useNewUrlParser: true, useCreateIndex: true }
   )
   .then(() => {
     app.listen(process.env.PORT || 3001);
