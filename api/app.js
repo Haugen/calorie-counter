@@ -40,7 +40,7 @@ app.use('*', (req, res) => {
 });
 
 // Default error handler.
-app.use('*', (err, req, res) => {
+app.use('*', (err, req, res, next) => {
   res.status(err.statusCode || 500).json({
     error: err.toString()
   });
