@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 require('dotenv').config();
 
 const app = express();
@@ -26,6 +27,9 @@ app.use((req, res, next) => {
 
   next();
 });
+
+// Use helmet to set and/or remove additional headers.
+app.use(helmet());
 
 // Routes.
 app.use('/admin', adminRoutes);
