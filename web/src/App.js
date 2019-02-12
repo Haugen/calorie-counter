@@ -198,6 +198,9 @@ class App extends Component {
 
         <footer className="small footer">
           Calorie Counter, made with love and hunger!
+          <br />
+          Code on <a href="https://github.com/Haugen/calorie-counter">Github</a>
+          .
         </footer>
       </>
     );
