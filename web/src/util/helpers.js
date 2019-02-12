@@ -2,7 +2,7 @@
 module.exports.BASE_URL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3001'
-    : 'LIVE BACKEND URL';
+    : 'https://calorie-count-api.herokuapp.com';
 
 // Convert date between local and UTC.
 module.exports.convertDate = (date, direction) => {
