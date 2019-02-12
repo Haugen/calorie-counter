@@ -1,7 +1,11 @@
+const fs = require('fs');
+const path = require('path');
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const morgan = require('morgan');
 require('dotenv').config();
 
 const app = express();
@@ -30,6 +34,13 @@ app.use((req, res, next) => {
 
 // Use helmet to set and/or remove additional headers.
 app.use(helmet());
+
+// Use morgan for logging.
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, 'access.log'),
+  { flags: 'a' }
+);
+app.use(morgan('combined', { stream: accessLogStream }));
 
 // Routes.
 app.use('/admin', adminRoutes);
